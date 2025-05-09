@@ -3,206 +3,218 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { models } from "@/lib/models";
-import { Canvas } from "@/components/Canvas";
-import { ModelViewer } from "@/components/ModelViewer";
-import { useInView } from "react-intersection-observer";
+import SpaceBackground from "@/components/SpaceBackground";
+import ModelCard from "@/components/ModelCard";
+import ModelDetail from "@/components/ModelDetail";
 
 export default function Home() {
-  const [scrollY, setScrollY] = useState(0);
-  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [activeModelId, setActiveModelId] = useState<string | null>(null);
+  const [showDetail, setShowDetail] = useState<boolean>(false);
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
   
-  const [titleRef, titleInView] = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  });
-  
+  // Simulate initial loading
   useEffect(() => {
-    const handleScroll = () => {
-      setScrollY(window.scrollY);
-    };
-    
-    const handleMouseMove = (e: MouseEvent) => {
-      setCursorPosition({ x: e.clientX, y: e.clientY });
-    };
-    
-    window.addEventListener('scroll', handleScroll);
-    window.addEventListener('mousemove', handleMouseMove);
-    
-    // Simulate loading
-    const timer = setTimeout(() => {
+    setTimeout(() => {
       setIsLoaded(true);
-    }, 1000);
-    
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('mousemove', handleMouseMove);
-      clearTimeout(timer);
-    };
+    }, 2000);
   }, []);
-
+  
+  const handleCardClick = (modelId: string) => {
+    if (activeModelId === modelId) {
+      setShowDetail(true);
+    } else {
+      setActiveModelId(modelId);
+    }
+  };
+  
+  const activeModel = models.find(m => m.id === activeModelId) || null;
+  
   return (
-    <>
-      <Canvas cursorPosition={cursorPosition} />
+    <main className="min-h-screen flex flex-col">
+      <SpaceBackground />
       
+      {/* Loading screen */}
       <AnimatePresence>
         {!isLoaded && (
-          <motion.div 
-            initial={{ opacity: 1 }}
+          <motion.div
+            className="fixed inset-0 z-50 bg-black flex flex-col items-center justify-center"
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black"
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           >
             <motion.h1
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="text-white text-4xl font-bold"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-4xl font-bold text-gradient glow-text mb-8"
             >
-              Mental Models
+              Mental Models Explorer
             </motion.h1>
+            
+            <motion.div
+              initial={{ width: 0 }}
+              animate={{ width: "200px" }}
+              transition={{ delay: 0.5, duration: 1.5 }}
+              className="h-0.5 bg-gradient-to-r from-purple-600 to-indigo-600 rounded"
+            />
           </motion.div>
         )}
       </AnimatePresence>
       
-      <div className="min-h-screen">
-        <header className="fixed top-0 left-0 w-full z-40 mix-blend-difference">
-          <div className="container mx-auto px-6 py-6 flex justify-between items-center">
-            <motion.div 
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.2, duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
-              className="text-white text-xl font-medium tracking-tight"
-            >
-              Mental Models
-            </motion.div>
+      {/* Header */}
+      <header className="pt-6 px-6 z-10">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: isLoaded ? 1 : 0, y: isLoaded ? 0 : -20 }}
+            transition={{ delay: 0.5, duration: 0.5 }}
+            className="flex justify-between items-center"
+          >
+            <h1 className="text-2xl font-bold text-gradient">Mental Models</h1>
             
-            <motion.nav
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.4, duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
-            >
-              <ul className="flex space-x-8 text-white text-sm">
-                <li className="relative overflow-hidden">
-                  <span className="block hover:opacity-60 transition-opacity cursor-pointer">About</span>
+            <nav>
+              <ul className="flex space-x-6 text-sm">
+                <li>
+                  <a href="#about" className="text-gray-300 hover:text-white transition-colors">
+                    About
+                  </a>
                 </li>
-                <li className="relative overflow-hidden">
-                  <span className="block hover:opacity-60 transition-opacity cursor-pointer">Models</span>
-                </li>
-                <li className="relative overflow-hidden">
-                  <span className="block hover:opacity-60 transition-opacity cursor-pointer">Contact</span>
+                <li>
+                  <a href="#explore" className="text-gray-300 hover:text-white transition-colors">
+                    Explore
+                  </a>
                 </li>
               </ul>
-            </motion.nav>
-          </div>
-        </header>
+            </nav>
+          </motion.div>
+        </div>
+      </header>
+      
+      {/* Hero section */}
+      <section className="flex-1 flex flex-col items-center justify-center px-6 pt-10 pb-20 z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: isLoaded ? 1 : 0, y: isLoaded ? 0 : 30 }}
+          transition={{ delay: 0.8, duration: 0.8 }}
+          className="text-center max-w-3xl mb-16"
+        >
+          <h2 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+            Powerful <span className="text-gradient glow-text">Mental Models</span> for Better Thinking
+          </h2>
+          <p className="text-xl text-gray-300">
+            Explore interactive visualizations of frameworks that can transform how you think, make decisions, and solve problems.
+          </p>
+        </motion.div>
         
-        <main>
-          <section className="h-screen flex flex-col justify-center relative">
-            <div className="container mx-auto px-6">
-              <motion.div
-                initial={{ opacity: 0, y: 100 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.6, duration: 1.2, ease: [0.76, 0, 0.24, 1] }}
-                className="max-w-4xl"
-              >
-                <h1 className="text-6xl sm:text-7xl md:text-8xl font-bold tracking-tight text-white mb-6">
-                  Visualizing Mental Models
-                </h1>
-                <p className="text-xl md:text-2xl text-gray-400 max-w-2xl">
-                  Explore powerful frameworks that shape how we think, make decisions, and solve problems.
-                </p>
-              </motion.div>
-            </div>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 2, duration: 1 }}
-              className="absolute bottom-12 left-1/2 transform -translate-x-1/2"
-            >
-              <div className="flex items-center flex-col">
-                <span className="text-white text-sm mb-2">Scroll to explore</span>
-                <div className="w-6 h-10 border-2 border-white rounded-full flex justify-center">
-                  <motion.div
-                    animate={{ 
-                      y: [0, 15, 0],
-                    }}
-                    transition={{ 
-                      repeat: Infinity,
-                      duration: 1.5,
-                      ease: "easeInOut" 
-                    }}
-                    className="w-1 h-2 bg-white rounded-full mt-2"
-                  />
-                </div>
-              </div>
-            </motion.div>
-          </section>
-          
-          <section
-            ref={titleRef}
-            className="py-32 bg-gray-50 dark:bg-gray-900 text-black dark:text-white relative z-10"
-          >
-            <div className="container mx-auto px-6">
-              <motion.div
-                initial={{ opacity: 0, y: 60 }}
-                animate={titleInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
-                className="mb-16 max-w-3xl"
-              >
-                <h2 className="text-4xl md:text-5xl font-bold mb-6">
-                  Ikigai
-                </h2>
-                <p className="text-lg text-gray-800 dark:text-gray-200">
-                  A Japanese concept meaning "a reason for being" - the intersection of what you love, 
-                  what you are good at, what the world needs, and what you can be paid for.
-                </p>
-              </motion.div>
-              
-              <ModelViewer model={models[0]} />
-            </div>
-          </section>
-        </main>
-        
-        <footer className="bg-black text-white py-12">
-          <div className="container mx-auto px-6">
-            <div className="flex flex-col md:flex-row justify-between items-start">
-              <div className="mb-8 md:mb-0">
-                <h3 className="text-xl font-medium mb-4">Mental Models</h3>
-                <p className="text-gray-400 max-w-xs">
-                  Exploring the frameworks that help us understand the world and make better decisions.
-                </p>
-              </div>
-              
-              <div className="grid grid-cols-2 gap-x-12 gap-y-6">
-                <div>
-                  <h4 className="text-sm text-gray-400 uppercase tracking-wider mb-3">Site</h4>
-                  <ul className="space-y-2">
-                    <li><a href="#" className="hover:text-gray-400 transition-colors">Home</a></li>
-                    <li><a href="#" className="hover:text-gray-400 transition-colors">About</a></li>
-                    <li><a href="#" className="hover:text-gray-400 transition-colors">Models</a></li>
-                  </ul>
-                </div>
-                
-                <div>
-                  <h4 className="text-sm text-gray-400 uppercase tracking-wider mb-3">Connect</h4>
-                  <ul className="space-y-2">
-                    <li><a href="#" className="hover:text-gray-400 transition-colors">Twitter</a></li>
-                    <li><a href="#" className="hover:text-gray-400 transition-colors">Instagram</a></li>
-                    <li><a href="#" className="hover:text-gray-400 transition-colors">Email</a></li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: isLoaded ? 1 : 0 }}
+          transition={{ delay: 1.2, duration: 0.8 }}
+          className="w-full max-w-5xl"
+        >
+          <div id="explore" className="models-space relative h-[800px]">
+            {/* Spatial arrangement of model cards */}
+            {models.map((model, index) => (
+              <ModelCard
+                key={model.id}
+                model={model}
+                index={index}
+                active={model.id === activeModelId}
+                onClick={() => handleCardClick(model.id)}
+              />
+            ))}
             
-            <div className="mt-12 pt-8 border-t border-gray-800 flex justify-between items-center">
-              <p className="text-sm text-gray-500">© {new Date().getFullYear()} Mental Models. All rights reserved.</p>
-              <a href="#" className="text-sm text-gray-500 hover:text-white transition-colors">Privacy Policy</a>
+            {/* Instruction text */}
+            <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-center">
+              <p className="text-gray-400 text-sm">
+                {activeModelId 
+                  ? 'Click the highlighted card again to explore in detail' 
+                  : 'Select a mental model to begin exploring'}
+              </p>
             </div>
           </div>
-        </footer>
-      </div>
-    </>
+        </motion.div>
+      </section>
+      
+      {/* About section */}
+      <section id="about" className="grid-lines py-24 border-t border-gray-800 z-10 px-6">
+        <div className="max-w-5xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true, margin: "-100px" }}
+            className="mb-12"
+          >
+            <h2 className="text-3xl font-bold mb-4">What Are Mental Models?</h2>
+            <p className="text-xl text-gray-300 max-w-3xl">
+              Mental models are frameworks for thinking. They simplify complex situations
+              so you can reason through them effectively. Having a rich set of mental models
+              to draw from can help you make better decisions and solve difficult problems.
+            </p>
+          </motion.div>
+          
+          <div className="grid md:grid-cols-3 gap-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true, margin: "-100px" }}
+              className="model-card p-6 rounded-lg"
+            >
+              <h3 className="text-xl font-semibold mb-3">Why Use Mental Models?</h3>
+              <p className="text-gray-300">
+                Mental models help us understand the world, identify patterns, and make sense
+                of complexity. They're tools that extend our cognitive capabilities.
+              </p>
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              viewport={{ once: true, margin: "-100px" }}
+              className="model-card p-6 rounded-lg"
+            >
+              <h3 className="text-xl font-semibold mb-3">How to Use This Explorer</h3>
+              <p className="text-gray-300">
+                Navigate the 3D space to discover different mental models. Click on a model
+                to highlight it, then click again to explore it in detail with interactive visualizations.
+              </p>
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+              viewport={{ once: true, margin: "-100px" }}
+              className="model-card p-6 rounded-lg"
+            >
+              <h3 className="text-xl font-semibold mb-3">Learning By Interaction</h3>
+              <p className="text-gray-300">
+                Each model features an interactive component designed to help you
+                internalize the concept through engagement rather than just reading.
+              </p>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+      
+      {/* Footer */}
+      <footer className="py-8 border-t border-gray-800 z-10 text-sm text-gray-400 px-6">
+        <div className="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center">
+          <div>© {new Date().getFullYear()} Mental Models Explorer. All rights reserved.</div>
+          <div className="mt-4 md:mt-0">
+            Crafted with care for clearer thinking and better decisions.
+          </div>
+        </div>
+      </footer>
+      
+      {/* Model detail modal */}
+      {showDetail && activeModel && (
+        <ModelDetail 
+          model={activeModel} 
+          onClose={() => setShowDetail(false)} 
+        />
+      )}
+    </main>
   );
 }
