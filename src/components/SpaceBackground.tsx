@@ -5,6 +5,16 @@ import { useEffect, useRef } from 'react';
 export default function SpaceBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
+  const starsRef = useRef<Array<{
+    x: number;
+    y: number;
+    radius: number;
+    color: string;
+    speed: number;
+    opacity: number;
+    twinkleSpeed: number;
+    twinkleDirection: boolean;
+  }>>([]);
   
   useEffect(() => {
     if (!canvasRef.current) return;
@@ -26,97 +36,97 @@ export default function SpaceBackground() {
     handleResize();
     window.addEventListener('resize', handleResize);
     
-    // Star properties
-    const stars: { x: number; y: number; radius: number; color: string; speed: number }[] = [];
-    
     // Initialize stars
     function initializeStars() {
-      stars.length = 0; // Clear existing stars
+      // Clear existing stars
+      starsRef.current = [];
       
-      // Calculate number of stars based on screen size
-      const totalStars = Math.floor((canvas.width * canvas.height) / 10000);
+      // Fewer stars for a more subtle effect
+      const totalStars = Math.floor((canvas.width * canvas.height) / 20000);
       
       for (let i = 0; i < totalStars; i++) {
-        const radius = Math.random() * 1.2;
-        stars.push({
+        const radius = Math.random() * 0.8; // Smaller stars
+        starsRef.current.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
           radius: radius,
           color: getStarColor(radius),
-          speed: 0.05 + Math.random() * 0.05
+          speed: 0.02 + Math.random() * 0.03, // Slower movement
+          opacity: 0.2 + Math.random() * 0.5, // Lower base opacity
+          twinkleSpeed: 0.001 + Math.random() * 0.002,
+          twinkleDirection: Math.random() > 0.5
         });
       }
     }
     
     // Get color based on star size
     function getStarColor(radius: number) {
-      // Larger stars are more likely to have color
-      if (radius > 0.8 && Math.random() > 0.7) {
+      // Fewer colored stars
+      if (radius > 0.6 && Math.random() > 0.85) {
         const colors = [
-          "rgba(155, 176, 255, 0.8)", // Blueish
-          "rgba(255, 180, 155, 0.8)", // Reddish
-          "rgba(155, 255, 200, 0.8)"  // Greenish
+          "rgba(155, 176, 255, 0.6)", // Blueish (more subtle)
+          "rgba(255, 180, 155, 0.5)", // Reddish (more subtle)
+          "rgba(155, 255, 200, 0.5)"  // Greenish (more subtle)
         ];
         return colors[Math.floor(Math.random() * colors.length)];
       }
       
-      // Most stars are white with varying opacity
-      return `rgba(255, 255, 255, ${0.5 + Math.random() * 0.5})`;
+      // Most stars are white with very low opacity
+      return `rgba(255, 255, 255, 0.7)`;
     }
     
     // Draw a single star
-    function drawStar(star: typeof stars[0]) {
+    function drawStar(star: typeof starsRef.current[0]) {
       if (!contextRef.current) return;
       
       const ctx = contextRef.current;
       ctx.beginPath();
       ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-      ctx.fillStyle = star.color;
+      
+      // Apply the star's current opacity
+      const color = star.color.replace(/[\d\.]+\)$/g, `${star.opacity})`);
+      ctx.fillStyle = color;
       ctx.fill();
       
-      // Add glow to larger stars
-      if (star.radius > 0.8) {
+      // Add very subtle glow only to the larger stars
+      if (star.radius > 0.7) {
         ctx.beginPath();
-        ctx.arc(star.x, star.y, star.radius * 2, 0, Math.PI * 2);
+        ctx.arc(star.x, star.y, star.radius * 1.5, 0, Math.PI * 2);
         const gradient = ctx.createRadialGradient(
-          star.x, star.y, star.radius * 0.5,
-          star.x, star.y, star.radius * 2
+          star.x, star.y, star.radius * 0.3,
+          star.x, star.y, star.radius * 1.5
         );
-        gradient.addColorStop(0, star.color);
+        gradient.addColorStop(0, color.replace(/[\d\.]+\)$/g, `${star.opacity * 0.3})`));
         gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
         ctx.fillStyle = gradient;
         ctx.fill();
       }
     }
     
-    // Draw distant nebula
-    function drawNebula() {
+    // Draw subtle gradient background
+    function drawBackground() {
       if (!contextRef.current || !canvas) return;
       
       const ctx = contextRef.current;
       
-      // Create a few random nebula clouds
-      for (let i = 0; i < 3; i++) {
-        const x = Math.random() * canvas.width;
-        const y = Math.random() * canvas.height;
-        const radius = 100 + Math.random() * 200;
-        
-        const gradient = ctx.createRadialGradient(
-          x, y, 0,
-          x, y, radius
-        );
-        
-        // Random nebula color
-        const hue = Math.floor(Math.random() * 360);
-        gradient.addColorStop(0, `hsla(${hue}, 80%, 30%, 0.03)`);
-        gradient.addColorStop(0.5, `hsla(${hue}, 70%, 20%, 0.02)`);
-        gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
-        
-        ctx.beginPath();
-        ctx.arc(x, y, radius, 0, Math.PI * 2);
-        ctx.fillStyle = gradient;
-        ctx.fill();
-      }
+      // Create a dark gradient background
+      const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+      gradient.addColorStop(0, "rgba(10, 10, 20, 1)");
+      gradient.addColorStop(1, "rgba(5, 5, 15, 1)");
+      
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      // Add subtle vignette effect
+      const vignetteGradient = ctx.createRadialGradient(
+        canvas.width / 2, canvas.height / 2, 0,
+        canvas.width / 2, canvas.height / 2, canvas.width / 1.5
+      );
+      vignetteGradient.addColorStop(0, "rgba(0, 0, 0, 0)");
+      vignetteGradient.addColorStop(1, "rgba(0, 0, 0, 0.3)");
+      
+      ctx.fillStyle = vignetteGradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
     
     // Animation loop
@@ -127,21 +137,30 @@ export default function SpaceBackground() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
       // Draw background
-      ctx.fillStyle = "rgba(5, 5, 10, 1)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      
-      // Draw nebula effects
-      drawNebula();
+      drawBackground();
       
       // Draw and update stars
-      stars.forEach(star => {
-        // Move stars slightly for twinkling effect
+      starsRef.current.forEach(star => {
+        // Move stars very slowly
         star.y += star.speed;
         
         // Wrap stars around screen
         if (star.y > canvas.height) {
           star.y = 0;
           star.x = Math.random() * canvas.width;
+        }
+        
+        // Subtle twinkling effect
+        if (star.twinkleDirection) {
+          star.opacity += star.twinkleSpeed;
+          if (star.opacity >= 0.2 + Math.random() * 0.5) {
+            star.twinkleDirection = false;
+          }
+        } else {
+          star.opacity -= star.twinkleSpeed;
+          if (star.opacity <= 0.1 + Math.random() * 0.2) {
+            star.twinkleDirection = true;
+          }
         }
         
         drawStar(star);
