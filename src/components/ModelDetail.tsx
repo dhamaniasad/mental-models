@@ -2,8 +2,8 @@
 
 import { Model } from '@/lib/models';
 import { motion, AnimatePresence } from 'framer-motion';
-import IkigaiDiagram from './diagrams/IkigaiDiagram';
-import EisenhowerDiagram from './diagrams/EisenhowerDiagram';
+import { IkigaiDiagram } from './diagrams/IkigaiDiagram';
+import { EisenhowerDiagram } from './diagrams/EisenhowerDiagram';
 
 interface ModelDetailProps {
   model: Model | null;
