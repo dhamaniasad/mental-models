@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #000000;
+  --foreground: #ffffff;
 }
 
 @theme inline {
@@ -14,13 +14,173 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #000000;
+    --foreground: #ffffff;
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans, Arial, Helvetica, sans-serif);
+  overflow-x: hidden;
+  cursor: default;
+}
+
+/* ==== PERSPECTIVE HELPERS ==== */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+
+/* ==== ANIMATIONS ==== */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 20s linear infinite;
+}
+
+/* ==== TEXT EFFECTS ==== */
+.text-gradient {
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ==== RESPONSIVE CONTAINER ==== */
+.container {
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 1.5rem;
+  padding-left: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .container {
+    max-width: 640px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 768px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: 1024px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container {
+    max-width: 1280px;
+  }
+}
+
+/* ==== SMOOTH SCROLLING ==== */
+html {
+  scroll-behavior: smooth;
+}
+
+/* ==== TEXT STYLES ==== */
+p {
+  line-height: 1.7;
+}
+
+/* Improved typography for headings */
+h1, h2, h3, h4, h5, h6 {
+  letter-spacing: -0.02em;
+  font-weight: 700;
+}
+
+/* ==== CUSTOM CURSOR ==== */
+.custom-cursor {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: difference;
+  backdrop-filter: invert(1);
+  transform: translate(-50%, -50%);
+}
+
+/* Custom cursor for larger elements */
+.cursor-hover {
+  cursor: none;
+}
+
+/* ==== CARD EFFECTS ==== */
+.card-shadow {
+  box-shadow: 0 0 50px rgba(138, 43, 226, 0.2);
+}
+
+.glass-card {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ==== MISC UTILITIES ==== */
+.blend-difference {
+  mix-blend-mode: difference;
+}
+
+/* Style for code blocks */
+code {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 0.25rem;
+  padding: 0.125rem 0.25rem;
+  font-family: var(--font-mono, monospace);
+}
+
+/* Dark mode adjustments for code blocks */
+@media (prefers-color-scheme: dark) {
+  code {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
 }
