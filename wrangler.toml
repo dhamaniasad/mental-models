@@ -1,20 +1,26 @@
+main = ".open-next/worker.js"
 name = "mental-models"
 compatibility_date = "2025-05-10"
+compatibility_flags = [
+  "nodejs_compat",
+  "global_fetch_strictly_public"
+]
 
-# Configure the Next.js build output as a Pages project
 [build]
 command = "npm run build"
 
 [site]
-bucket = "./.next/static"
+bucket = ".open-next/assets"
 
 # Configure workers.dev subdomain
 workers_dev = true
 
-# Bind assets with the Pages Functions
-[[assets]]
-binding = "NEXT_ASSETS"
-path = "./.next/static"
+# Asset binding for static files
+[assets]
+directory = ".open-next/assets"
+binding = "ASSETS"
 
-[build.upload]
-format = "service-worker"
+# Self-reference for internal routing
+[[services]]
+binding = "WORKER_SELF_REFERENCE"
+service = "mental-models"

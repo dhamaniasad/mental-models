@@ -10,14 +10,17 @@ const nextConfig: NextConfig = {
     // your project has type errors
     ignoreBuildErrors: true,
   },
-  // Optimized for Cloudflare Pages deployment
-  output: 'export',
-  // Disable image optimization since Cloudflare Pages doesn't support it
-  images: {
-    unoptimized: true,
+  // OpenNext will handle the output configuration
+  experimental: {
+    // This enables middleware and server components to work with OpenNext
+    serverComponentsExternalPackages: [],
+    // This enables app router navigation
+    appDocumentPreloading: true
   },
-  // Disable React strict mode in production for better performance
-  reactStrictMode: process.env.NODE_ENV !== 'production',
+  // Enhanced built-in client-side caching
+  staticPageGenerationTimeout: 180,
+  // Improve build speeds by reusing cached builds
+  poweredByHeader: false,
 };
 
 export default nextConfig;
