@@ -557,7 +557,11 @@ p {
 }
 
 .shadow-glow {
-  box-shadow: 0 0 15px rgba(255, 58, 94, 0.15);
+  box-shadow: 0 0 30px rgba(255, 58, 94, 0.15), 0 0 5px rgba(255, 58, 94, 0.05);
+}
+
+.shadow-glow-sm {
+  box-shadow: 0 0 15px rgba(255, 58, 94, 0.1);
 }
 
 .animation-delay-500 {

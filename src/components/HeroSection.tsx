@@ -29,20 +29,24 @@ export default function HeroSection({
   const heroRef = useRef<HTMLDivElement>(null);
 
   return (
-    <section ref={heroRef} className="min-h-[100vh] flex flex-col justify-center z-10 relative overflow-hidden pt-28">
+    <section ref={heroRef} className="min-h-[100vh] flex flex-col justify-center z-10 relative overflow-hidden pt-32 pb-16">
       {/* Enhanced background effects with parallax */}
-      <motion.div 
+      <motion.div
         style={{ y: bgGradient1Y }}
-        className="absolute top-[-30%] left-[-20%] w-[90%] h-[90%] bg-gradient-to-br from-accent-primary/10 to-transparent rounded-full blur-[150px] opacity-70 animate-pulse-slow">
+        className="absolute top-[-30%] left-[-20%] w-[90%] h-[90%] bg-gradient-to-br from-accent-primary/20 to-transparent rounded-full blur-[150px] opacity-80 animate-pulse-slow">
       </motion.div>
-      <motion.div 
+      <motion.div
         style={{ y: bgGradient2Y }}
-        className="absolute bottom-[-20%] right-[-15%] w-[80%] h-[80%] bg-gradient-to-tl from-accent-secondary/10 to-transparent rounded-full blur-[130px] opacity-60 animate-pulse-slower">
+        className="absolute bottom-[-20%] right-[-15%] w-[80%] h-[80%] bg-gradient-to-tl from-accent-secondary/15 to-transparent rounded-full blur-[130px] opacity-70 animate-pulse-slower">
       </motion.div>
-      <motion.div 
+      <motion.div
         style={{ y: bgGradient3Y }}
-        className="absolute top-[30%] right-[10%] w-[40%] h-[40%] bg-gradient-to-tl from-accent-tertiary/8 to-transparent rounded-full blur-[100px] opacity-50 animate-float">
+        className="absolute top-[30%] right-[10%] w-[40%] h-[40%] bg-gradient-to-tl from-accent-tertiary/15 to-transparent rounded-full blur-[100px] opacity-70 animate-float">
       </motion.div>
+
+      {/* Additional accent colors for visual interest */}
+      <div className="absolute top-[15%] left-[15%] w-[25%] h-[25%] bg-gradient-to-br from-purple-500/10 to-transparent rounded-full blur-[80px] opacity-60 animate-pulse-slow"></div>
+      <div className="absolute bottom-[20%] left-[30%] w-[20%] h-[20%] bg-gradient-to-br from-blue-500/10 to-transparent rounded-full blur-[70px] opacity-50 animate-float"></div>
 
       {/* Dynamic particle effects handled by ParticleBackground component in parent */}
 
@@ -57,46 +61,66 @@ export default function HeroSection({
 
       <motion.div
         style={{ y: heroContentY, opacity: heroOpacity }}
-        className="container mx-auto px-4 md:px-6 relative"
+        className="container mx-auto px-4 md:px-8 lg:px-10 relative"
       >
+        {/* Decorative elements for visual interest */}
+        <div className="absolute right-[5%] top-[-10%] h-20 w-[1px] bg-gradient-to-b from-transparent via-white/20 to-transparent"></div>
+        <div className="absolute left-[7%] bottom-[25%] h-32 w-[1px] bg-gradient-to-b from-transparent via-accent-primary/30 to-transparent"></div>
+        <div className="absolute right-[12%] bottom-[5%] w-20 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+
         {/* Center content with improved layout and parallax - Two column layout on larger screens */}
-        <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-16 py-6 md:py-10">
+        <div className="max-w-[1240px] mx-auto flex flex-col lg:flex-row items-center lg:items-start justify-between gap-10 lg:gap-16 xl:gap-20 py-8 md:py-12">
           {/* Left content column */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: isLoaded ? 1 : 0 }}
             transition={{ duration: 1.2 }}
-            className="text-left w-full lg:w-2/5 relative mb-8 lg:mb-0"
+            className="text-left w-full lg:w-2/5 relative mb-12 lg:mb-0"
           >
+            {/* Decorative line above content */}
+            <motion.div
+              initial={{ width: 0 }}
+              animate={{ width: 80 }}
+              transition={{ duration: 1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              className="h-0.5 bg-gradient-to-r from-accent-primary to-accent-secondary mb-8 hidden md:block"
+            ></motion.div>
+
             {/* Premium animated badge */}
-            <motion.div 
+            <motion.div
               initial={{ y: -20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="inline-flex items-center justify-center mb-5 px-4 py-1.5 rounded-full bg-gradient-to-r from-accent-primary/15 to-accent-secondary/15 border border-accent-primary/20 backdrop-blur-md"
+              className="inline-flex items-center justify-center mb-6 px-5 py-2 rounded-full bg-gradient-to-r from-accent-primary/20 to-accent-secondary/20 border border-accent-primary/30 backdrop-blur-md shadow-glow-sm"
             >
               <div className="w-2 h-2 rounded-full bg-accent-primary mr-2 animate-pulse"></div>
-              <span className="text-sm text-white/90 font-medium tracking-wide">Explore Powerful Decision Frameworks</span>
+              <span className="text-sm text-white font-medium tracking-wider">Powerful Decision Frameworks</span>
             </motion.div>
             
             {/* Enhanced headline with creative typography */}
             <div className="relative mb-5">
               {/* Premium headline design with layered effects */}
               <motion.h1 
-                className="text-5xl md:text-7xl font-extrabold text-white leading-tight tracking-tighter relative z-10 mb-3"
+                className="text-5xl md:text-7xl xl:text-8xl font-black text-white leading-tight tracking-tighter relative z-10 mb-6"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: isLoaded ? 1 : 0, y: isLoaded ? 0 : 30 }}
                 transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
               >
                 <span className="inline-block">
                   <span className="block relative">
-                    <span className="absolute -inset-1 blur-xl bg-gradient-to-r from-accent-primary/20 to-accent-secondary/20 animate-pulse-slow opacity-70"></span>
+                    <span className="absolute -inset-1 blur-xl bg-gradient-to-r from-accent-primary/30 to-accent-secondary/30 animate-pulse-slow opacity-80"></span>
                     <span className="relative bg-clip-text text-transparent bg-gradient-to-r from-white via-white/95 to-white/80">
                       Mental
                     </span>
+                    {/* Subtle accent marker */}
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: "30%" }}
+                      transition={{ duration: 0.6, delay: 1.2 }}
+                      className="absolute -right-4 top-0 h-1 bg-accent-primary/60 rounded-full"
+                    ></motion.div>
                   </span>
-                  <span className="block mt-[-0.2em] relative">
-                    <span className="absolute -inset-1 blur-xl bg-gradient-to-r from-accent-secondary/20 to-accent-primary/20 animate-pulse-slow opacity-70 animation-delay-500"></span>
+                  <span className="block mt-[-0.15em] relative">
+                    <span className="absolute -inset-1 blur-xl bg-gradient-to-r from-accent-secondary/30 to-accent-primary/30 animate-pulse-slow opacity-80 animation-delay-500"></span>
                     <span className="relative bg-clip-text text-transparent bg-gradient-to-r from-white via-white/95 to-white/80">
                       Models
                     </span>
@@ -107,14 +131,14 @@ export default function HeroSection({
               {/* Elegant text stroke design element */}
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: isLoaded ? 0.07 : 0, scale: isLoaded ? 1 : 0.9 }}
+                animate={{ opacity: isLoaded ? 0.1 : 0, scale: isLoaded ? 1 : 0.9 }}
                 transition={{ duration: 1.5, delay: 0.5 }}
-                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full -z-10 pointer-events-none lg:hidden"
+                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full -z-10 pointer-events-none"
               >
-                <div className="text-8xl font-black text-transparent leading-none tracking-tighter text-center"
+                <div className="text-9xl md:text-[12rem] font-black text-transparent leading-none tracking-tighter text-center"
                      style={{
-                       WebkitTextStroke: '1px rgba(255,255,255,0.1)',
-                       textStroke: '1px rgba(255,255,255,0.1)'
+                       WebkitTextStroke: '1px rgba(255,255,255,0.15)',
+                       textStroke: '1px rgba(255,255,255,0.15)'
                      }}>
                   THINK
                 </div>
@@ -123,14 +147,28 @@ export default function HeroSection({
             
             {/* Enhanced subheadline */}
             <motion.p
-              className="text-white/70 text-lg max-w-md mb-8 leading-relaxed"
+              className="text-white/80 text-lg md:text-xl xl:text-2xl max-w-xl mb-10 leading-relaxed font-light"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: isLoaded ? 1 : 0, y: isLoaded ? 0 : 20 }}
               transition={{ duration: 0.8, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
             >
-              Discover interactive visualizations of powerful thinking frameworks
-              to enhance your decision-making and problem-solving abilities
+              Explore powerful <span className="text-accent-primary/90 font-normal">interactive visualizations</span> of thinking frameworks that enhance your decision-making abilities
             </motion.p>
+
+            {/* New feature highlight text */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: isLoaded ? 1 : 0, x: isLoaded ? 0 : -20 }}
+              transition={{ duration: 0.8, delay: 0.8 }}
+              className="mb-10 flex items-center"
+            >
+              <div className="flex space-x-1 mr-3">
+                {[...Array(5)].map((_, i) => (
+                  <div key={i} className="w-1 h-1 rounded-full bg-accent-primary/90"></div>
+                ))}
+              </div>
+              <span className="text-white/60 text-sm uppercase tracking-wider font-medium">Interactive & Explorable</span>
+            </motion.div>
             
             {/* Enhanced CTA buttons */}
             <motion.div
@@ -247,29 +285,48 @@ export default function HeroSection({
             animate={{ opacity: isLoaded ? 1 : 0, y: isLoaded ? 0 : 30 }}
             transition={{ duration: 1, delay: 0.8, ease: [0.22, 1, 0.36, 1] }}
             style={{ y: heroModelY }}
-            className="relative w-full lg:w-3/5 h-[380px] md:h-[480px] perspective-3d"
+            className="relative w-full lg:w-3/5 h-[400px] md:h-[500px] xl:h-[550px] perspective-3d"
           >
+            {/* Top decorative element */}
+            <div className="absolute right-[10%] -top-4 flex items-center">
+              <div className="h-px w-12 bg-gradient-to-r from-transparent via-accent-primary/40 to-transparent"></div>
+              <div className="ml-2 text-xs text-white/40 tracking-widest uppercase">Explore</div>
+            </div>
+
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="relative w-full h-full rounded-2xl overflow-hidden border border-white/10 backdrop-blur-md">
+              <div className="relative w-full h-full rounded-2xl overflow-hidden border border-white/10 backdrop-blur-md shadow-glow">
                 {/* 3D interactive model visualization */}
                 <div id="model-visualization" className="absolute inset-0 flex items-center justify-center">
                   <div className="relative h-[350px] w-[350px] transform-style-3d">
                     {/* 3D Orbit elements */}
                     <div className="orbit-container">
-                      {/* Central core */}
+                      {/* Central core - enhanced with glow and animation */}
                       <motion.div
                         initial={{ scale: 0, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         transition={{ duration: 1.5, delay: 1.2, ease: [0.34, 1.56, 0.64, 1] }}
                         className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20"
                       >
-                        <div className="w-24 h-24 rounded-full bg-gradient-to-br from-accent-primary to-accent-secondary p-[2px] animate-pulse-slow">
+                        <motion.div
+                          animate={{
+                            boxShadow: ['0 0 20px 5px rgba(255,58,94,0.3)', '0 0 30px 5px rgba(255,58,94,0.2)', '0 0 20px 5px rgba(255,58,94,0.3)']
+                          }}
+                          transition={{
+                            duration: 4,
+                            repeat: Infinity,
+                            ease: "easeInOut"
+                          }}
+                          className="w-28 h-28 rounded-full p-[2px] animate-pulse-slow"
+                          style={{
+                            background: 'linear-gradient(135deg, rgba(255,58,94,1) 0%, rgba(77,69,255,0.9) 100%)',
+                          }}
+                        >
                           <div className="w-full h-full rounded-full bg-black/70 backdrop-blur-xl flex items-center justify-center">
-                            <div className="w-12 h-12 rounded-full bg-gradient-to-r from-white/90 to-white/70 flex items-center justify-center transform rotate-45">
-                              <div className="w-7 h-7 rounded-sm bg-black/90"></div>
+                            <div className="w-16 h-16 rounded-full bg-gradient-to-r from-white/90 to-white/70 shadow-glow flex items-center justify-center transform rotate-45">
+                              <div className="w-8 h-8 rounded-sm bg-black/90"></div>
                             </div>
                           </div>
-                        </div>
+                        </motion.div>
                       </motion.div>
                       
                       {/* Orbital rings with glow effects */}
@@ -282,11 +339,21 @@ export default function HeroSection({
                           className="absolute left-1/2 top-1/2 w-full h-full transform -translate-x-1/2 -translate-y-1/2 transform-style-3d"
                           style={{ width: `${140 + ring * 60}px`, height: `${140 + ring * 60}px` }}
                         >
-                          <div className="absolute inset-0 rounded-full border-2 border-white/5 transform-style-3d animate-spin-slow">
-                            <div className="absolute w-full h-full rounded-full animate-glow-pulse-slow" 
-                              style={{ 
-                                boxShadow: `0 0 20px 2px rgba(${ring === 1 ? '255,58,94' : ring === 2 ? '77,69,255' : '24,173,181'}, 0.${ring * 2})`,
+                          <div className="absolute inset-0 rounded-full border-2 border-white/10 transform-style-3d animate-spin-slow"
+                            style={{ animationDuration: `${25 - ring * 5}s` }}
+                          >
+                            <div className="absolute w-full h-full rounded-full animate-glow-pulse-slow"
+                              style={{
+                                boxShadow: `0 0 20px 2px rgba(${ring === 1 ? '255,58,94' : ring === 2 ? '77,69,255' : '24,173,181'}, 0.${ring * 3})`,
                                 animationDelay: `${ring * 0.5}s`
+                              }}>
+                            </div>
+
+                            {/* Additional glow effect */}
+                            <div className="absolute inset-0 rounded-full opacity-70"
+                              style={{
+                                border: `1px solid rgba(${ring === 1 ? '255,58,94' : ring === 2 ? '77,69,255' : '24,173,181'}, 0.4)`,
+                                boxShadow: `inset 0 0 15px 1px rgba(${ring === 1 ? '255,58,94' : ring === 2 ? '77,69,255' : '24,173,181'}, 0.15)`
                               }}>
                             </div>
                             
@@ -308,18 +375,30 @@ export default function HeroSection({
                                   transform: `rotate(${i * (360 / (3 + ring))}deg) translateX(${70 + ring * 30}px)`
                                 }}
                               >
-                                <div 
-                                  className={`w-full h-full rounded-full animate-pulse-fast`}
-                                  style={{ 
-                                    background: ring === 1 
-                                      ? 'linear-gradient(to right, #FF3A5E, #FF5A6E)' 
-                                      : ring === 2 
-                                        ? 'linear-gradient(to right, #4D45FF, #6A62FF)' 
-                                        : 'linear-gradient(to right, #18ADB5, #27C2CA)',
-                                    boxShadow: `0 0 10px 2px rgba(${ring === 1 ? '255,58,94' : ring === 2 ? '77,69,255' : '24,173,181'}, 0.5)`,
-                                    animationDelay: `${i * 0.2}s`
+                                <motion.div
+                                  className={`w-full h-full rounded-full`}
+                                  animate={{
+                                    scale: [1, 1.2, 1],
+                                    boxShadow: [
+                                      `0 0 10px 2px rgba(${ring === 1 ? '255,58,94' : ring === 2 ? '77,69,255' : '24,173,181'}, 0.5)`,
+                                      `0 0 15px 3px rgba(${ring === 1 ? '255,58,94' : ring === 2 ? '77,69,255' : '24,173,181'}, 0.7)`,
+                                      `0 0 10px 2px rgba(${ring === 1 ? '255,58,94' : ring === 2 ? '77,69,255' : '24,173,181'}, 0.5)`
+                                    ]
                                   }}
-                                ></div>
+                                  transition={{
+                                    duration: 2 + i * 0.5,
+                                    repeat: Infinity,
+                                    ease: "easeInOut",
+                                    delay: i * 0.3
+                                  }}
+                                  style={{
+                                    background: ring === 1
+                                      ? 'linear-gradient(to right, #FF3A5E, #FF5A6E)'
+                                      : ring === 2
+                                        ? 'linear-gradient(to right, #4D45FF, #6A62FF)'
+                                        : 'linear-gradient(to right, #18ADB5, #27C2CA)'
+                                  }}
+                                ></motion.div>
                               </motion.div>
                             ))}
                           </div>
