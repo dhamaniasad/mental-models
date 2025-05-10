@@ -170,108 +170,173 @@ export default function HeroSection({
               <span className="text-white/60 text-sm uppercase tracking-wider font-medium">Interactive & Explorable</span>
             </motion.div>
             
-            {/* Enhanced CTA buttons */}
+            {/* Enhanced CTA button */}
             <motion.div
-              className="flex flex-col sm:flex-row items-center gap-4"
+              className="flex justify-center"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: isLoaded ? 1 : 0, y: isLoaded ? 0 : 20 }}
               transition={{ duration: 0.8, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
             >
               <motion.div
                 className="w-full sm:w-auto"
-                whileHover="hover"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ type: "spring", stiffness: 400, damping: 15 }}
                 initial="rest"
               >
                 <Link
                   href="#explore"
-                  className="relative px-8 py-4 rounded-lg overflow-hidden group w-full flex items-center justify-center cursor-btn"
+                  className="relative px-12 py-6 rounded-2xl overflow-hidden group w-full sm:w-auto flex items-center justify-center cursor-btn"
                   onMouseMove={(e) => {
                     const btn = e.currentTarget;
                     const rect = btn.getBoundingClientRect();
                     const x = e.clientX - rect.left;
                     const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const distanceFromCenter = Math.sqrt(Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2));
+                    const maxDistance = Math.sqrt(Math.pow(rect.width, 2) + Math.pow(rect.height, 2)) / 2;
+                    const intensity = 1 - Math.min(distanceFromCenter / maxDistance, 1);
+                    
                     btn.style.setProperty('--cursor-x', `${x}px`);
                     btn.style.setProperty('--cursor-y', `${y}px`);
+                    btn.style.setProperty('--intensity', intensity.toString());
+                    btn.style.setProperty('--angle', `${Math.atan2(y - centerY, x - centerX) * 180 / Math.PI}deg`);
                   }}
                 >
-                  {/* Premium button with animated gradient border */}
-                  <div className="absolute inset-0 p-[1px] rounded-lg overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-r from-accent-primary via-accent-secondary to-accent-primary animate-gradient-shift"></div>
-                  </div>
-
-                  <div className="relative z-10 bg-black/50 backdrop-blur-md rounded-lg px-8 py-4 w-full h-full flex items-center justify-center">
-                    <span className="font-medium text-white">Explore Models</span>
-                  </div>
-
-                  {/* Premium button hover effect - cursor following with enhanced light effect */}
-                  <div className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 overflow-hidden">
-                    {/* Main cursor light effect */}
-                    <div className="absolute h-40 w-40 rounded-full pointer-events-none"
+                  {/* Ultra premium multi-layered animated border */}
+                  <div className="absolute inset-0 rounded-2xl overflow-hidden">
+                    {/* Base gradient layer */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-accent-primary via-accent-secondary to-accent-primary bg-[length:200%_200%] animate-gradient-shift"></div>
+                    
+                    {/* Glow effect */}
+                    <div className="absolute inset-[-2px] opacity-40 blur-md bg-gradient-to-r from-accent-primary via-accent-secondary to-accent-primary animate-pulse-slow"></div>
+                    
+                    {/* Dynamic angle-based highlight that follows cursor */}
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="absolute inset-0 opacity-70"
+                        style={{
+                          background: 'conic-gradient(from var(--angle), transparent, white 20%, transparent 40%)',
+                          mixBlendMode: 'overlay',
+                        }}
+                      ></div>
+                    </div>
+                    
+                    {/* Subtle noise texture overlay */}
+                    <div className="absolute inset-0 opacity-5"
                       style={{
-                        top: 'calc(var(--cursor-y, 0) - 80px)',
-                        left: 'calc(var(--cursor-x, 0) - 80px)',
-                        background: 'radial-gradient(circle closest-side, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.2) 40%, transparent 80%)',
-                        transition: 'opacity 0.15s ease-out',
+                        backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noise%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%%22 height=%22100%%22 filter=%22url(%23noise)%22/%3E%3C/svg%3E")',
+                        backgroundBlendMode: 'overlay',
+                      }}
+                    ></div>
+                    
+                    {/* Shimmer effect */}
+                    <div className="absolute inset-0 overflow-hidden">
+                      <div className="absolute inset-0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-2000 ease-in-out"
+                        style={{
+                          background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.4) 45%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0.4) 55%, transparent 100%)',
+                          mixBlendMode: 'overlay',
+                        }}
+                      ></div>
+                    </div>
+                    
+                    {/* Inner border line effect */}
+                    <div className="absolute inset-[3px] rounded-xl border border-white/20 opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
+                  </div>
+
+                  {/* Button content with ultra premium glass effect */}
+                  <div className="relative z-10 rounded-xl px-6 py-4 w-full h-full flex items-center justify-center"
+                    style={{
+                      background: 'linear-gradient(to bottom, rgba(20,20,20,0.9), rgba(0,0,0,0.8))',
+                      backdropFilter: 'blur(15px)',
+                      boxShadow: 'inset 0 1px 1px 0 rgba(255,255,255,0.15), inset 0 -1px 1px 0 rgba(0,0,0,0.5)',
+                    }}
+                  >
+                    <div className="flex items-center gap-4">
+                      {/* Button edge lighting effect */}
+                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 overflow-hidden rounded-xl">
+                        <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
+                        <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+                      </div>
+                      
+                      {/* Icon with subtle glow */}
+                      <div className="relative w-10 h-10 flex items-center justify-center">
+                        <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-30 transition-opacity duration-300"
+                          style={{
+                            background: 'radial-gradient(circle, rgba(255,58,94,0.7) 0%, transparent 75%)',
+                            filter: 'blur(5px)',
+                          }}
+                        ></div>
+                        <div className="relative z-10 text-accent-primary group-hover:text-white transition-colors duration-300">
+                          <svg className="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M12 16l4-4-4-4M8 12h8"></path>
+                          </svg>
+                        </div>
+                      </div>
+                      
+                      {/* Text with gradient and subtle animation */}
+                      <div className="flex flex-col items-start">
+                        <span className="text-xs uppercase tracking-widest text-white/50 group-hover:text-white/70 transition-colors duration-300">Start Your Journey</span>
+                        <span className="text-xl font-bold tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-white/80 group-hover:from-white group-hover:to-white/90 transition-all duration-300">
+                          Explore Models
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Ultra realistic cursor light following effect */}
+                  <div className="absolute inset-0 rounded-2xl overflow-hidden">
+                    {/* Primary light effect with dynamic intensity */}
+                    <div
+                      className="absolute pointer-events-none"
+                      style={{
+                        top: 'calc(var(--cursor-y, 50%) - 150px)',
+                        left: 'calc(var(--cursor-x, 50%) - 150px)',
+                        width: '300px',
+                        height: '300px',
+                        background: 'radial-gradient(circle closest-side, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.3) 30%, transparent 80%)',
+                        opacity: 'calc(0.3 + (var(--intensity, 0) * 0.7))',
+                        transform: 'translate3d(0, 0, 0)', /* Force GPU acceleration */
+                        transition: 'opacity 0ms linear, top 20ms linear, left 20ms linear',
                         mixBlendMode: 'soft-light',
-                      }}>
-                    </div>
-
-                    {/* Secondary glow effect */}
-                    <div className="absolute h-60 w-60 rounded-full pointer-events-none"
+                      }}
+                    />
+                    
+                    {/* Secondary larger glow with accent color */}
+                    <div
+                      className="absolute pointer-events-none"
                       style={{
-                        top: 'calc(var(--cursor-y, 0) - 120px)',
-                        left: 'calc(var(--cursor-x, 0) - 120px)',
-                        background: 'radial-gradient(circle closest-side, rgba(255,98,132,0.2) 0%, transparent 80%)',
-                        boxShadow: '0 0 40px 5px rgba(255,58,94,0.15)',
-                        transition: 'opacity 0.2s ease-out',
-                      }}>
-                    </div>
-
-                    {/* Edge highlight effect */}
-                    <div className="absolute inset-0 rounded-lg border border-white/20 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  </div>
-                </Link>
-              </motion.div>
-              
-              <motion.div
-                className="w-full sm:w-auto"
-                whileHover="hover"
-                initial="rest"
-              >
-                <Link
-                  href="#about"
-                  className="relative px-8 py-4 rounded-lg border border-white/10 hover:border-white/30 text-white/80 hover:text-white font-medium transition-all duration-300 backdrop-blur-sm hover:backdrop-blur-lg w-full flex items-center justify-center group cursor-btn"
-                  onMouseMove={(e) => {
-                    const btn = e.currentTarget;
-                    const rect = btn.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    btn.style.setProperty('--cursor-x', `${x}px`);
-                    btn.style.setProperty('--cursor-y', `${y}px`);
-                  }}
-                >
-                  <div className="flex items-center justify-center">
-                    <span>Learn More</span>
-                    <motion.svg
-                      className="w-4 h-4 ml-2 opacity-70 group-hover:opacity-100"
-                      animate={{ x: [0, 4, 0] }}
-                      transition={{ duration: 1.5, repeat: Infinity, repeatType: "loop", ease: "easeInOut" }}
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
-                    </motion.svg>
-                  </div>
-
-                  {/* Subtle light effect */}
-                  <div className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 overflow-hidden">
-                    <div className="absolute h-32 w-32 rounded-full pointer-events-none"
-                      style={{
-                        top: 'calc(var(--cursor-y, 0) - 64px)',
-                        left: 'calc(var(--cursor-x, 0) - 64px)',
-                        background: 'radial-gradient(circle closest-side, rgba(255,255,255,0.15) 0%, transparent 90%)',
-                        mixBlendMode: 'overlay',
-                      }}>
+                        top: 'calc(var(--cursor-y, 50%) - 200px)',
+                        left: 'calc(var(--cursor-x, 50%) - 200px)',
+                        width: '400px',
+                        height: '400px',
+                        background: 'radial-gradient(circle closest-side, rgba(255,58,94,0.4) 0%, rgba(255,58,94,0.1) 40%, transparent 70%)',
+                        opacity: 'calc(0.2 + (var(--intensity, 0) * 0.8))',
+                        transform: 'translate3d(0, 0, 0)', /* Force GPU acceleration */
+                        boxShadow: '0 0 50px 10px rgba(255,58,94,0.15)',
+                        transition: 'opacity 0ms linear, top 30ms linear, left 30ms linear',
+                        mixBlendMode: 'color-dodge',
+                      }}
+                    />
+                    
+                    {/* Dynamic particles effect that follow cursor */}
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      {[...Array(12)].map((_, i) => (
+                        <div
+                          key={i}
+                          className="absolute w-[2px] h-[2px] rounded-full"
+                          style={{
+                            backgroundColor: i % 3 === 0 ? 'rgba(255,255,255,0.9)' : i % 3 === 1 ? 'rgba(255,58,94,0.8)' : 'rgba(77,69,255,0.8)',
+                            top: `calc(var(--cursor-y, 50%) + ${Math.cos(i * 30 * Math.PI/180) * 80}px)`,
+                            left: `calc(var(--cursor-x, 50%) + ${Math.sin(i * 30 * Math.PI/180) * 80}px)`,
+                            opacity: 'calc(0.3 + (var(--intensity, 0) * 0.7))',
+                            transform: 'scale(var(--intensity, 0))',
+                            boxShadow: i % 3 === 0 ? '0 0 4px 1px rgba(255,255,255,0.4)' : i % 3 === 1 ? '0 0 4px 1px rgba(255,58,94,0.4)' : '0 0 4px 1px rgba(77,69,255,0.4)',
+                            transition: 'transform 100ms ease-out, top 150ms ease-out, left 150ms ease-out',
+                          }}
+                        />
+                      ))}
                     </div>
                   </div>
                 </Link>
