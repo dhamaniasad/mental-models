@@ -564,6 +564,11 @@ p {
   animation-delay: 0.5s;
 }
 
+.cursor-btn {
+  --cursor-x: 50%;
+  --cursor-y: 50%;
+}
+
 /* Canvas background - stark minimalist */
 .canvas-background {
   position: fixed;
