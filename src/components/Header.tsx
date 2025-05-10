@@ -1,50 +1,69 @@
 "use client";
 
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { useState, useEffect } from 'react';
 
 export function Header() {
+  const [scrolled, setScrolled] = useState(false);
+  const { scrollY } = useScroll();
+
+  // Sharp animation values for brutalist design
+  const logoScale = useTransform(scrollY, [0, 50], [1, 0.9]);
+  const accentOpacity = useTransform(scrollY, [0, 50], [0, 1]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <header className="sticky top-0 z-10 backdrop-blur-md bg-white/80 dark:bg-black/80 border-b border-gray-200 dark:border-gray-800">
-      <div className="container mx-auto px-4 py-4 flex justify-between items-center max-w-6xl">
-        <motion.div 
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="flex items-center gap-2"
+    <header className={`fixed top-0 w-full z-50 ${scrolled ? 'border-b-2 border-white' : ''}`}>
+      {/* Red accent bar that appears on scroll */}
+      <motion.div
+        className="h-1 bg-accent"
+        style={{ opacity: accentOpacity }}
+      />
+
+      <div className="container max-w-none px-6 py-4 flex justify-between items-center bg-black">
+        <motion.div
+          initial={{ opacity: 0, x: -15 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.2, ease: [0, 0, 0.2, 1] }} // Sharp easing
+          style={{ scale: logoScale }}
+          className="flex items-center"
         >
-          <svg 
-            className="w-8 h-8 text-indigo-600" 
-            viewBox="0 0 24 24" 
-            fill="none" 
-            stroke="currentColor"
-          >
-            <path 
-              strokeLinecap="round" 
-              strokeLinejoin="round" 
-              strokeWidth={2} 
-              d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" 
-            />
-          </svg>
-          <span className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+          <div className="w-6 h-6 border-2 border-white mr-3 relative">
+            <div className="absolute w-3 h-3 bg-accent right-0 bottom-0" />
+          </div>
+          <span className="text-xl font-mono font-bold tracking-tight uppercase text-white">
             Mental Models
           </span>
         </motion.div>
-        
+
         <nav>
-          <ul className="flex gap-6">
+          <ul className="flex gap-10">
             <li>
-              <Link 
-                href="/" 
-                className="text-gray-600 hover:text-indigo-600 dark:text-gray-300 dark:hover:text-indigo-400 transition-colors"
+              <Link
+                href="/"
+                className="text-white uppercase font-mono text-sm tracking-widest hover:text-accent relative
+                           after:content-[''] after:absolute after:w-full after:h-0.5 after:bg-accent
+                           after:left-0 after:bottom-0 after:scale-x-0 hover:after:scale-x-100
+                           after:transition-transform after:duration-200 after:origin-left"
               >
                 Home
               </Link>
             </li>
             <li>
-              <Link 
-                href="/about" 
-                className="text-gray-600 hover:text-indigo-600 dark:text-gray-300 dark:hover:text-indigo-400 transition-colors"
+              <Link
+                href="/about"
+                className="text-white uppercase font-mono text-sm tracking-widest hover:text-accent relative
+                           after:content-[''] after:absolute after:w-full after:h-0.5 after:bg-accent
+                           after:left-0 after:bottom-0 after:scale-x-0 hover:after:scale-x-100
+                           after:transition-transform after:duration-200 after:origin-left"
               >
                 About
               </Link>
