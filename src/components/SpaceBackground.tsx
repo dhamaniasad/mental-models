@@ -27,7 +27,7 @@ export default function SpaceBackground() {
     resize();
     window.addEventListener('resize', resize);
     
-    // Simple grid pattern for brutalist aesthetic
+    // Sophisticated background with blurred gradient circles
     function draw() {
       const pixelRatio = window.devicePixelRatio || 1;
       const width = canvas.width / pixelRatio;
@@ -36,80 +36,125 @@ export default function SpaceBackground() {
       // Clear canvas
       ctx.clearRect(0, 0, width, height);
       
-      // Draw minimal grid
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
-      ctx.lineWidth = 1;
+      // Sophisticated black gradient background
+      const bgGradient = ctx.createLinearGradient(0, 0, width, height);
+      bgGradient.addColorStop(0, '#0A0A0A');
+      bgGradient.addColorStop(1, '#111111');
+      ctx.fillStyle = bgGradient;
+      ctx.fillRect(0, 0, width, height);
       
-      // Large grid (64px)
-      const gridSize = 64;
+      // Apply a very subtle grain effect
+      applyGrain(ctx, width, height, 0.015);
       
-      // Vertical lines
-      for (let x = 0; x <= width; x += gridSize) {
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, height);
-        ctx.stroke();
+      // Draw large blurred gradient circles
+      drawBlurredCircles(ctx, width, height);
+      
+      // Add subtle grid of dots
+      drawDotGrid(ctx, width, height);
+      
+      // Apply subtle vignette effect
+      applyVignette(ctx, width, height);
+    }
+    
+    function applyGrain(ctx, width, height, intensity) {
+      const imageData = ctx.getImageData(0, 0, width, height);
+      const data = imageData.data;
+      
+      for (let i = 0; i < data.length; i += 4) {
+        const noise = Math.random() * intensity;
+        data[i] = data[i] + noise;
+        data[i+1] = data[i+1] + noise;
+        data[i+2] = data[i+2] + noise;
       }
       
-      // Horizontal lines
-      for (let y = 0; y <= height; y += gridSize) {
+      ctx.putImageData(imageData, 0, 0);
+    }
+    
+    function drawBlurredCircles(ctx, width, height) {
+      // Create several large, blurred gradient circles
+      ctx.save();
+      
+      // Define gradient circles with different colors
+      const circles = [
+        { x: width * 0.2, y: height * 0.3, radius: Math.max(width, height) * 0.3, color1: 'rgba(255, 30, 86, 0.03)', color2: 'rgba(5, 0, 0, 0)' },
+        { x: width * 0.8, y: height * 0.7, radius: Math.max(width, height) * 0.4, color1: 'rgba(0, 30, 255, 0.02)', color2: 'rgba(0, 0, 5, 0)' },
+        { x: width * 0.5, y: height * 0.2, radius: Math.max(width, height) * 0.25, color1: 'rgba(255, 30, 86, 0.015)', color2: 'rgba(5, 0, 0, 0)' },
+        { x: width * 0.1, y: height * 0.7, radius: Math.max(width, height) * 0.2, color1: 'rgba(128, 0, 128, 0.02)', color2: 'rgba(0, 0, 0, 0)' },
+      ];
+      
+      circles.forEach(circle => {
+        const gradient = ctx.createRadialGradient(
+          circle.x, circle.y, 0,
+          circle.x, circle.y, circle.radius
+        );
+        
+        gradient.addColorStop(0, circle.color1);
+        gradient.addColorStop(1, circle.color2);
+        
+        ctx.fillStyle = gradient;
         ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(width, y);
-        ctx.stroke();
-      }
+        ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2);
+        ctx.fill();
+      });
       
-      // Add occasional thicker lines for visual interest
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
-      ctx.lineWidth = 2;
+      ctx.restore();
+    }
+    
+    function drawDotGrid(ctx, width, height) {
+      ctx.save();
       
-      // Thicker vertical lines (every 4)
-      for (let x = 0; x <= width; x += gridSize * 4) {
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, height);
-        ctx.stroke();
-      }
+      // Draw subtle grid of dots
+      const spacing = 40;
+      const dotSize = 0.5;
       
-      // Thicker horizontal lines (every 4)
-      for (let y = 0; y <= height; y += gridSize * 4) {
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(width, y);
-        ctx.stroke();
-      }
-      
-      // Add a red accent line
-      ctx.strokeStyle = 'rgba(255, 82, 82, 0.4)';
-      ctx.lineWidth = 2;
-      
-      const accentLineY = height / 3;
-      ctx.beginPath();
-      ctx.moveTo(0, accentLineY);
-      ctx.lineTo(width, accentLineY);
-      ctx.stroke();
-      
-      // Add crosshair points at grid intersections
       ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
-      for (let x = 0; x <= width; x += gridSize * 4) {
-        for (let y = 0; y <= height; y += gridSize * 4) {
-          ctx.beginPath();
-          ctx.arc(x, y, 2, 0, Math.PI * 2);
-          ctx.fill();
+      
+      for (let x = spacing; x < width; x += spacing) {
+        for (let y = spacing; y < height; y += spacing) {
+          // Add slight randomness to dot positions
+          const offsetX = (Math.random() - 0.5) * 2;
+          const offsetY = (Math.random() - 0.5) * 2;
+          
+          // Different sizes and opacities for dots
+          if (Math.random() > 0.97) {
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+            ctx.beginPath();
+            ctx.arc(x + offsetX, y + offsetY, dotSize * 2, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+          } else if (Math.random() > 0.92) {
+            ctx.fillStyle = 'rgba(255, 100, 100, 0.15)';
+            ctx.beginPath();
+            ctx.arc(x + offsetX, y + offsetY, dotSize * 1.5, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+          } else {
+            ctx.beginPath();
+            ctx.arc(x + offsetX, y + offsetY, dotSize, 0, Math.PI * 2);
+            ctx.fill();
+          }
         }
       }
       
-      // Add random noise dots
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.04)';
-      for (let i = 0; i < width * height / 10000; i++) {
-        const x = Math.random() * width;
-        const y = Math.random() * height;
-        const size = Math.random() * 2;
-        
-        ctx.beginPath();
-        ctx.arc(x, y, size, 0, Math.PI * 2);
-        ctx.fill();
-      }
+      ctx.restore();
+    }
+    
+    function applyVignette(ctx, width, height) {
+      ctx.save();
+      
+      // Create radial gradient for vignette effect
+      const gradient = ctx.createRadialGradient(
+        width / 2, height / 2, 0,
+        width / 2, height / 2, Math.max(width, height) / 1.5
+      );
+      
+      gradient.addColorStop(0, 'rgba(0, 0, 0, 0)');
+      gradient.addColorStop(1, 'rgba(0, 0, 0, 0.4)');
+      
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, width, height);
+      
+      ctx.restore();
     }
         
     return () => {
@@ -118,13 +163,10 @@ export default function SpaceBackground() {
   }, []);
   
   return (
-    <>
-      <canvas 
-        ref={canvasRef} 
-        className="canvas-background"
-        aria-hidden="true"
-      />
-      <div className="brutalist-grid"></div>
-    </>
+    <canvas 
+      ref={canvasRef} 
+      className="fixed inset-0 -z-10 w-full h-full"
+      aria-hidden="true"
+    />
   );
 }
