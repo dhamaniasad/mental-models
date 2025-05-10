@@ -64,19 +64,17 @@ export default function Home() {
 
   return (
     <main className="min-h-screen flex flex-col">
-      {/* Enhanced backgrounds */}
-      <SpaceBackground />
-      <ParticleBackground />
+      {/* Minimalist light background - disabled dark space backgrounds */}
 
-      {/* Loading screen */}
+      {/* Loading screen - light theme */}
       <AnimatePresence>
         {!isLoaded && (
           <motion.div
-            className="fixed inset-0 z-50 bg-black flex flex-col items-center justify-center"
+            className="fixed inset-0 z-50 bg-white flex flex-col items-center justify-center"
             exit={{ opacity: 0 }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           >
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8 }}
@@ -87,7 +85,7 @@ export default function Home() {
                   initial={{ scale: 0, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ delay: 0.2, duration: 0.5 }}
-                  className="absolute inset-0 bg-gradient-to-br from-accent-primary to-accent-secondary rounded-lg"
+                  className="absolute inset-0 bg-gradient-to-br from-accent-primary to-accent-secondary rounded-lg shadow-md"
                 ></motion.div>
                 <motion.div
                   initial={{ scale: 0, opacity: 0 }}
@@ -98,16 +96,16 @@ export default function Home() {
                   <div className="w-8 h-8 bg-white rounded-sm transform rotate-45"></div>
                 </motion.div>
               </div>
-              
+
               <motion.h1
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5, duration: 0.5 }}
-                className="text-2xl font-medium text-white tracking-wide mb-4"
+                className="text-2xl font-bold text-gray-900 tracking-tight mb-4"
               >
                 Mental Models
               </motion.h1>
-              
+
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: 180 }}
@@ -123,196 +121,164 @@ export default function Home() {
       <Header />
 
       {/* Hero section component */}
-      <HeroSection 
+      <HeroSection
         isLoaded={isLoaded}
         models={models}
-        heroContentY={heroContentY}
-        heroOpacity={heroOpacity}
-        heroModelY={heroModelY}
-        bgGradient1Y={bgGradient1Y}
-        bgGradient2Y={bgGradient2Y}
-        bgGradient3Y={bgGradient3Y}
       />
 
-      {/* Models grid section with parallax */}
-      <section id="explore" ref={exploreRef} className="container mx-auto px-6 py-24 z-10 relative">
-        {/* Section marker with parallax */}
-        <motion.div 
-          className="absolute -left-4 top-24 w-8 h-0.5 bg-accent-primary"
-          initial={{ width: 0 }}
-          whileInView={{ width: 32 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          viewport={{ once: true }}
-        ></motion.div>
-        
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true, margin: "-100px" }}
-          className="mb-16"
-        >
-          <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
+      {/* Models grid section */}
+      <section id="explore" className="bg-gray-50 py-40 z-10 relative">
+        <div className="container mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            viewport={{ once: true }}
-            className="text-3xl md:text-4xl font-bold text-white mb-3"
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true, margin: "-100px" }}
+            className="mb-24"
           >
-            Explore Mental Models
-          </motion.h2>
-          
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            viewport={{ once: true }}
-            className="text-white/60 max-w-2xl mb-12"
-          >
-            Select a model to discover frameworks that can transform your decision-making 
-            and problem-solving approach
-          </motion.p>
-        </motion.div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
-          {models.map((model, index) => (
-            <motion.div
-              key={model.id}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ 
-                opacity: 1, 
-                y: 0,
-                transition: { 
-                  duration: 0.7, 
-                  delay: index * 0.1,
-                  ease: [0.22, 1, 0.36, 1]
-                }
-              }}
-              viewport={{ once: true, margin: "-50px" }}
+            <div className="flex items-center gap-4 mb-6">
+              <div className="w-10 h-2 bg-accent-primary rounded"></div>
+              <span className="text-accent-primary font-medium text-sm">Explore</span>
+            </div>
+
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              viewport={{ once: true }}
+              className="text-4xl md:text-5xl font-bold text-gray-900 mb-8"
             >
-              <ModelCard
-                model={model}
-                index={index}
-                active={model.id === activeModelId}
-              />
-            </motion.div>
-          ))}
+              Mental Models Collection
+            </motion.h2>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="text-gray-600 text-xl max-w-3xl leading-relaxed"
+            >
+              Select a model to discover frameworks that can transform your decision-making
+              and problem-solving approach
+            </motion.p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+            {models.map((model, index) => (
+              <motion.div
+                key={model.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{
+                  opacity: 1,
+                  y: 0,
+                  transition: {
+                    duration: 0.4,
+                    delay: index * 0.05,
+                    ease: "easeOut"
+                  }
+                }}
+                viewport={{ once: true, margin: "-50px" }}
+              >
+                <ModelCard
+                  model={model}
+                  index={index}
+                  active={model.id === activeModelId}
+                />
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* About section with parallax */}
-      <section id="about" ref={aboutRef} className="py-32 z-10 relative overflow-hidden">
-        {/* Background accents with parallax */}
-        <motion.div 
-          initial={{ x: 100, opacity: 0 }}
-          whileInView={{ x: 0, opacity: 0.4 }}
-          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-          viewport={{ once: true }}
-          className="absolute -top-[10%] -right-[10%] w-[40%] h-[40%] bg-gradient-to-br from-accent-primary/5 to-transparent rounded-full blur-[80px]"
-        ></motion.div>
-        
-        <div className="container mx-auto px-6 relative">
+      {/* About section */}
+      <section id="about" className="py-48 z-10 relative overflow-hidden">
+        <div className="container mx-auto relative">
           <div className="max-w-7xl mx-auto">
             <motion.div
-              initial={{ opacity: 0, y: 60 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1 }}
+              transition={{ duration: 0.6 }}
               viewport={{ once: true, margin: "-100px" }}
-              className="mb-16"
+              className="mb-32"
             >
-              <motion.div
-                initial={{ width: 0 }}
-                whileInView={{ width: 120 }}
-                transition={{ duration: 0.8, delay: 0.1 }}
-                viewport={{ once: true }}
-                className="h-0.5 bg-accent-primary mb-12"
-              ></motion.div>
-              
-              <motion.h2 
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-10 h-2 bg-accent-primary rounded"></div>
+                <span className="text-accent-primary font-medium text-sm">About</span>
+              </div>
+
+              <motion.h2
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
                 viewport={{ once: true }}
-                className="text-3xl md:text-4xl font-bold text-white mb-6"
+                className="text-4xl md:text-5xl font-bold text-gray-900 mb-10"
               >
                 About Mental Models
               </motion.h2>
-              
+
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
                 viewport={{ once: true }}
                 className="md:w-2/3"
               >
-                <p className="text-white/70 text-lg mb-6 leading-relaxed">
+                <p className="text-gray-600 text-xl mb-10 leading-relaxed">
                   Mental models are frameworks for thinking. They simplify complex situations
                   so you can reason through them effectively. Having a rich set of mental models
                   to draw from can help you make better decisions and solve difficult problems.
                 </p>
-                <p className="text-white/70 text-lg leading-relaxed">
+                <p className="text-gray-600 text-xl leading-relaxed">
                   This approach focuses on the essence of these cognitive tools, emphasizing
                   clarity and practical applications over complex theoretical discussions.
                 </p>
               </motion.div>
             </motion.div>
-            
-            <div className="grid md:grid-cols-3 gap-8">
+
+            <div className="grid md:grid-cols-3 gap-16">
               {[
                 {
                   title: "Why Use Mental Models?",
                   description: "Mental models help us understand the world, identify patterns, and make sense of complexity. They're tools that extend our cognitive capabilities beyond our built-in limitations.",
-                  icon: (
-                    <svg className="w-8 h-8 text-accent-primary" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M9 21.5L17.5 13L13 8.5L14.5 4.5L6 13L10.5 17.5L9 21.5Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                      <path d="M14.5 8.5L8 2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  )
+                  icon: "🧭",
+                  color: "bg-blue-50",
+                  iconColor: "text-blue-500"
                 },
                 {
                   title: "How To Use This Explorer",
                   description: "Browse the collection of mental models in the grid above. Click on a model to view detailed information with interactive visualizations focusing on the model's core principles.",
-                  icon: (
-                    <svg className="w-8 h-8 text-accent-primary" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                      <path d="M12 16V12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                      <path d="M12 8H12.01" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  )
+                  icon: "🔍",
+                  color: "bg-purple-50",
+                  iconColor: "text-purple-500"
                 },
                 {
                   title: "Learning By Interaction",
                   description: "Each model features an interactive component designed to help you internalize the concept through direct engagement rather than just passive reading.",
-                  icon: (
-                    <svg className="w-8 h-8 text-accent-primary" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M14.5 4H18C19.1046 4 20 4.89543 20 6V18C20 19.1046 19.1046 20 18 20H6C4.89543 20 4 19.1046 4 18V6C4 4.89543 4.89543 4 6 4H9.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                      <path d="M12 15V3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                      <path d="M9 6L12 3L15 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  )
+                  icon: "🔄",
+                  color: "bg-green-50",
+                  iconColor: "text-green-500"
                 }
               ].map((item, i) => (
                 <motion.div
                   key={item.title}
-                  initial={{ opacity: 0, y: 60, rotateY: -10 }}
-                  whileInView={{ 
-                    opacity: 1, 
-                    y: 0, 
-                    rotateY: 0,
-                    transition: { 
-                      duration: 0.8, 
-                      delay: 0.3 + i * 0.2,
-                      ease: [0.22, 1, 0.36, 1] 
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{
+                    opacity: 1,
+                    y: 0,
+                    transition: {
+                      duration: 0.5,
+                      delay: 0.1 + i * 0.1,
+                      ease: "easeOut"
                     }
                   }}
                   viewport={{ once: true, margin: "-50px" }}
-                  className="bg-surface-1/30 backdrop-blur-md border border-white/5 rounded-lg p-6 group hover:border-accent-primary/20 transition-all duration-300 transform perspective-1000 hover:translate-y-[-5px]"
+                  className="bg-white rounded-xl border border-gray-100 p-10 shadow-sm hover:shadow-md transition-all duration-300 hover:translate-y-[-5px]"
                 >
-                  <div className="bg-surface-2 rounded-lg p-3 w-12 h-12 flex items-center justify-center mb-5 group-hover:text-accent-primary transition-colors duration-300">
+                  <div className={`${item.color} rounded-xl p-5 w-20 h-20 flex items-center justify-center mb-8 text-3xl`}>
                     {item.icon}
                   </div>
-                  <h3 className="text-lg font-semibold text-white mb-3">{item.title}</h3>
-                  <p className="text-white/70 text-sm leading-relaxed">{item.description}</p>
+                  <h3 className="text-xl font-bold text-gray-900 mb-5">{item.title}</h3>
+                  <p className="text-gray-600 text-base leading-relaxed">{item.description}</p>
                 </motion.div>
               ))}
             </div>

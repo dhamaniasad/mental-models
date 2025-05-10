@@ -5,6 +5,9 @@ import { EisenhowerDiagram } from './diagrams/EisenhowerDiagram';
 import { SecondOrderThinkingDiagram } from './diagrams/SecondOrderThinkingDiagram';
 import { CircleOfCompetenceDiagram } from './diagrams/CircleOfCompetenceDiagram';
 import { InversionDiagram } from './diagrams/InversionDiagram';
+import { DivergentThinkingDiagram } from './diagrams/DivergentThinkingDiagram';
+import { LateralThinkingDiagram } from './diagrams/LateralThinkingDiagram';
+import { ContrarianThinkingDiagram } from './diagrams/ContrarianThinkingDiagram';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -42,6 +45,12 @@ export function DiagramRenderer({ modelId }: DiagramRendererProps) {
         return <CircleOfCompetenceDiagram />;
       case 'inversion':
         return <InversionDiagram />;
+      case 'divergent-thinking':
+        return <DivergentThinkingDiagram />;
+      case 'lateral-thinking':
+        return <LateralThinkingDiagram />;
+      case 'contrarian-thinking':
+        return <ContrarianThinkingDiagram />;
       default:
         return <div className="flex items-center justify-center h-full">Diagram coming soon</div>;
     }

@@ -12,6 +12,93 @@ export interface Model {
 
 export const models: Model[] = [
   {
+    id: 'divergent-thinking',
+    name: 'Divergent Thinking',
+    description: 'A thought process that generates creative ideas by exploring many possible solutions and making unexpected connections, characterized by fluency, flexibility, originality, and elaboration.',
+    longDescription: 'Divergent thinking is the ability to develop multiple, unique solutions to a problem rather than identifying a single "correct" answer. It involves generating a large quantity of ideas, exploring different directions, making unusual associations, and building upon existing concepts. This approach stands in contrast to convergent thinking, which focuses on arriving at a single, optimal solution. Divergent thinking is essential for innovation, creative problem-solving, and breaking out of conventional mental patterns. It encourages us to question assumptions, explore alternatives, and generate novel possibilities that might otherwise remain undiscovered. By temporarily suspending judgment and critical analysis, divergent thinking creates a psychological space where creative connections can flourish.',
+    howToUse: [
+      'Start with a clear problem statement or creative challenge',
+      'Generate as many ideas as possible without judging them initially (quantity over quality)',
+      'Embrace unusual or seemingly impractical ideas that challenge conventional thinking',
+      'Make unexpected connections between different concepts or domains',
+      'Build upon existing ideas through elaboration and combination',
+      'Use techniques like brainstorming, mind mapping, or random association to stimulate creativity',
+      'Only after generating many possibilities, evaluate and refine the most promising ones'
+    ],
+    realWorldExamples: [
+      {
+        title: 'Product Innovation',
+        description: 'When Apple developed the iPhone, they used divergent thinking to reimagine the mobile phone entirely, combining a phone with internet connectivity, a music player, and a touch interface. Instead of incrementally improving existing phones, they explored radical new possibilities.'
+      },
+      {
+        title: 'Scientific Discovery',
+        description: 'In developing the theory of general relativity, Einstein used divergent thinking through thought experiments, visualizing himself riding alongside light beams and imagining the curvature of spacetime. These unconventional mental explorations led to breakthrough insights that transformed physics.'
+      },
+      {
+        title: 'Problem Solving in Business',
+        description: 'Faced with declining mall traffic, a retail company used divergent thinking to identify 50+ possible responses rather than just closing stores. Their exploration led to innovative solutions including experiential pop-up shops, community gathering spaces, and partnerships with online brands seeking physical presence.'
+      }
+    ]
+  },
+  {
+    id: 'lateral-thinking',
+    name: 'Lateral Thinking',
+    description: 'An indirect and creative approach to problem-solving that explores non-obvious pathways and perspectives, using reasoning that is not immediately logical to find innovative solutions.',
+    longDescription: 'Lateral thinking, a term coined by Edward de Bono, involves solving problems through an indirect, creative approach using reasoning that is not immediately obvious. Unlike vertical thinking, which follows a sequential, logical progression, lateral thinking involves viewing problems from unexpected angles and challenging established patterns. It deliberately disrupts conventional thought processes to create new connections and generate fresh insights. Lateral thinking techniques include questioning assumptions, reversing perspectives, using random stimuli, and considering "what if" scenarios that may initially seem unrelated to the problem at hand. This approach is particularly valuable when conventional methods have failed or when innovation is needed to break through entrenched challenges.',
+    howToUse: [
+      'Challenge fundamental assumptions about the problem ("What if the opposite were true?")',
+      'Introduce random elements or perspectives to disrupt conventional thinking patterns',
+      'Use provocation techniques that deliberately propose seemingly illogical ideas',
+      'Reframe the problem completely from different stakeholder perspectives',
+      'Apply analogies from unrelated fields or domains to the situation',
+      'Ask "What if?" questions that challenge constraints you\'ve taken for granted',
+      'Temporarily set aside practical concerns to allow for unconventional ideas'
+    ],
+    realWorldExamples: [
+      {
+        title: 'Medical Innovation',
+        description: 'The development of keyhole surgery came from lateral thinking: "Instead of making incisions large enough for hands, what if we created specialized tools that could work through tiny openings?" This approach challenged the fundamental assumption that surgeons needed to directly access organs with their hands.'
+      },
+      {
+        title: 'Business Model Transformation',
+        description: 'Netflix\'s shift from DVD rentals to streaming demonstrated lateral thinking. Rather than competing on traditional terms with Blockbuster, they asked, "What if we eliminated late fees entirely and delivered content differently?" This question led to subscription streaming, fundamentally changing how people consume media.'
+      },
+      {
+        title: 'Urban Planning Solutions',
+        description: 'When Copenhagen faced traffic congestion and pollution problems, planners used lateral thinking to ask, "What if we designed our city for cyclists rather than cars?" This perspective shift led to one of the world\'s most bicycle-friendly cities, solving multiple problems simultaneously.'
+      }
+    ]
+  },
+  {
+    id: 'contrarian-thinking',
+    name: 'Contrarian Thinking',
+    description: 'A deliberate approach to reasoning that involves questioning prevailing wisdom, opposing consensus views, and exploring the value in unpopular or unconventional positions.',
+    longDescription: 'Contrarian thinking is the practice of deliberately going against prevailing wisdom, questioning consensus views, and exploring positions that most people reject. It\'s not about being contrary for its own sake, but rather systematically examining whether the crowd is overlooking important information or misinterpreting available data. Contrarian thinkers ask why popular opinions have formed, what evidence supports them, what might be missing from consensus views, and where group dynamics like conformity bias might be influencing collective judgment. This approach is particularly valuable in environments where independence of thought offers competitive advantages, such as investing, scientific research, and entrepreneurship. By being willing to stand apart from the crowd when evidence warrants it, contrarian thinkers can identify both risks and opportunities that others miss.',
+    howToUse: [
+      'Identify areas of strong consensus or "common knowledge" in your field',
+      'Ask what evidence truly supports these consensus views and how strong it is',
+      'Consider what information or perspectives might be missing from popular narratives',
+      'Explore historical cases where the majority was eventually proven wrong',
+      'Develop arguments for positions opposite to the mainstream view',
+      'Evaluate whether others\' agreement is based on independent analysis or social factors',
+      'Be selective: focus contrarianism on areas where independent thinking offers genuine advantages'
+    ],
+    realWorldExamples: [
+      {
+        title: 'Investment Strategy',
+        description: 'Legendary investor Warren Buffett exemplifies contrarian thinking with his advice to "be fearful when others are greedy, and greedy when others are fearful." During market downturns when most investors panic-sell, he often makes significant purchases, recognizing that pessimism frequently drives prices below fundamental value.'
+      },
+      {
+        title: 'Scientific Breakthrough',
+        description: 'When Barry Marshall proposed that stomach ulcers were caused by bacteria rather than stress or spicy food, the medical establishment rejected his theory. Unable to convince skeptics through conventional means, he famously drank a broth containing H. pylori, developed ulcers, and then cured himself with antibiotics—eventually winning a Nobel Prize for this contrarian insight.'
+      },
+      {
+        title: 'Business Innovation',
+        description: 'When Amazon began building AWS (Amazon Web Services), most analysts criticized them for diversifying away from retail into the unrelated cloud computing business. By thinking contrary to conventional business wisdom about "sticking to your core competencies," Amazon created what became its most profitable division and a market-leading position in cloud infrastructure.'
+      }
+    ]
+  },
+  {
     id: 'probabilistic-thinking',
     name: 'Probabilistic Thinking',
     description: 'A mental framework that approaches uncertainty by assigning probabilities to various outcomes rather than seeking absolute certainty, leading to more nuanced and accurate decision-making.',

@@ -3,6 +3,7 @@
 import { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import Image from 'next/image';
 import { Model } from '@/lib/models';
 import { IkigaiDiagram } from './diagrams/IkigaiDiagram';
 import { EisenhowerDiagram } from './diagrams/EisenhowerDiagram';
@@ -19,6 +20,7 @@ export function ModelViewer({ model }: ModelViewerProps) {
   const [activeTab, setActiveTab] = useState<'description' | 'how-to-use' | 'examples'>('description');
   const [activeExample, setActiveExample] = useState<number>(0);
   const [showTip, setShowTip] = useState<boolean>(false);
+  const [imageIndex, setImageIndex] = useState(1);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -33,8 +35,8 @@ export function ModelViewer({ model }: ModelViewerProps) {
     threshold: 0.1,
   });
 
+  // Show interaction tip after a delay
   useEffect(() => {
-    // Show interaction tip after a delay
     const timer = setTimeout(() => {
       setShowTip(true);
     }, 3000);
@@ -42,7 +44,88 @@ export function ModelViewer({ model }: ModelViewerProps) {
     return () => clearTimeout(timer);
   }, []);
 
+  // Get the number of available images based on model
+  const getMaxImagesForModel = (modelId: string): number => {
+    switch (modelId) {
+      case 'divergent-thinking':
+        return 4;
+      case 'lateral-thinking':
+        return 0; // Update when lateral thinking images are added
+      case 'contrarian-thinking':
+        return 0; // Update when contrarian thinking images are added
+      default:
+        return 0;
+    }
+  };
+
+  // Rotate through available images every 5 seconds
+  useEffect(() => {
+    const maxImages = getMaxImagesForModel(model.id);
+    
+    if (maxImages > 0) {
+      const timer = setInterval(() => {
+        setImageIndex(prev => prev < maxImages ? prev + 1 : 1);
+      }, 5000);
+      
+      return () => clearInterval(timer);
+    }
+  }, [model.id]);
+
+  // Render the appropriate diagram based on the model
   const renderDiagram = () => {
+    const maxImages = getMaxImagesForModel(model.id);
+    
+    // For models with custom images
+    if (maxImages > 0) {
+      const folderName = model.id.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+      const imagePrefix = model.id === 'divergent-thinking' ? 'div' : 'img';
+      
+      return (
+        <div className="relative w-full h-full flex items-center justify-center">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={`div${imageIndex}`}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+              className="relative w-full h-full flex items-center justify-center"
+            >
+              <div className="relative w-[85%] h-[85%]">
+                <Image
+                  src={`/images/divergent/div${imageIndex}.png`}
+                  alt={`${model.name} Visualization ${imageIndex}`}
+                  fill
+                  style={{ objectFit: 'contain' }}
+                  priority
+                  sizes="(max-width: 768px) 100vw, 400px"
+                  className="rounded-md"
+                />
+              </div>
+            </motion.div>
+          </AnimatePresence>
+          
+          {maxImages > 1 && (
+            <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-3 z-10">
+              {Array.from({ length: maxImages }, (_, i) => (
+                <button
+                  key={i + 1}
+                  onClick={() => setImageIndex(i + 1)}
+                  className={`w-3 h-3 rounded-full transition-colors ${
+                    imageIndex === i + 1
+                      ? 'bg-accent-primary shadow-sm'
+                      : 'bg-gray-300 hover:bg-gray-400'
+                  }`}
+                  aria-label={`View image ${i + 1}`}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      );
+    }
+    
+    // For models with SVG diagrams
     switch (model.id) {
       case 'ikigai':
         return <IkigaiDiagram />;
@@ -59,7 +142,7 @@ export function ModelViewer({ model }: ModelViewerProps) {
     }
   };
 
-  // Brutalist tab variants - sharp and decisive
+  // Animation variants
   const tabVariants = {
     inactive: {
       opacity: 0.7,
@@ -70,12 +153,11 @@ export function ModelViewer({ model }: ModelViewerProps) {
       x: 0,
       transition: {
         duration: 0.2,
-        ease: [0, 0, 0.2, 1] // Sharp easing
+        ease: [0, 0, 0.2, 1]
       }
     }
   };
 
-  // Content variants with more abrupt transitions
   const contentVariants = {
     hidden: {
       opacity: 0,
@@ -86,7 +168,7 @@ export function ModelViewer({ model }: ModelViewerProps) {
       x: 0,
       transition: {
         duration: 0.2,
-        ease: [0, 0, 0.2, 1] // Sharp easing
+        ease: [0, 0, 0.2, 1]
       }
     },
     exit: {
@@ -104,37 +186,37 @@ export function ModelViewer({ model }: ModelViewerProps) {
       style={{ opacity, y }}
       className="relative"
     >
-      <div className="border-2 border-white overflow-hidden bg-black">
+      <div className="overflow-hidden bg-white">
         <div className="grid md:grid-cols-2 gap-0">
-          {/* Content Section */}
-          <div className="p-6 md:p-10 flex flex-col h-full border-r-2 border-white">
-            {/* Red accent bar */}
-            <div className="h-1 w-32 bg-accent mb-6"></div>
+          {/* Content Section - Clean, modern */}
+          <div className="p-8 md:p-10 flex flex-col h-full border-r border-gray-100">
+            {/* Subtle accent element */}
+            <div className="h-1 w-20 bg-gradient-to-r from-accent-primary to-accent-secondary rounded-full mb-8"></div>
 
-            <motion.h2
-              initial={{ opacity: 0, x: -15 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.3 }}
-              className="text-2xl md:text-3xl font-mono font-bold uppercase text-white mb-6 tracking-tight"
+            <motion.h3
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
+              className="text-xl md:text-2xl font-bold text-gray-900 mb-4"
             >
-              {model.name}
-            </motion.h2>
+              About this framework
+            </motion.h3>
 
             <motion.p
-              initial={{ opacity: 0, x: -15 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.3, delay: 0.1 }}
-              className="text-white mb-8 font-mono text-sm leading-relaxed"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.1 }}
+              className="text-gray-600 mb-8 text-base leading-relaxed"
             >
               {model.description}
             </motion.p>
 
-            {/* Brutalist tab navigation */}
+            {/* Clean, modern tab navigation */}
             <motion.div
-              initial={{ opacity: 0, x: -15 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.3, delay: 0.2 }}
-              className="flex mb-8 border-b-2 border-white/30"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.2 }}
+              className="flex mb-8 border-b border-gray-200"
             >
               {(['description', 'how-to-use', 'examples'] as const).map((tab) => (
                 <motion.button
@@ -143,10 +225,10 @@ export function ModelViewer({ model }: ModelViewerProps) {
                   variants={tabVariants}
                   initial="inactive"
                   animate={activeTab === tab ? "active" : "inactive"}
-                  className={`relative px-4 py-2 font-mono text-xs uppercase tracking-widest ${
+                  className={`relative px-5 py-3 text-sm font-medium ${
                     activeTab === tab
-                      ? 'text-accent bg-white/10'
-                      : 'text-white hover:bg-white/5'
+                      ? 'text-accent-primary'
+                      : 'text-gray-600 hover:text-gray-900'
                   }`}
                 >
                   <span className="relative z-10">
@@ -154,17 +236,17 @@ export function ModelViewer({ model }: ModelViewerProps) {
                   </span>
                   {activeTab === tab && (
                     <motion.div
-                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent"
-                      layoutId="brutalist-underline"
-                      transition={{ duration: 0.2 }}
+                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent-primary"
+                      layoutId="tab-underline"
+                      transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                     />
                   )}
                 </motion.button>
               ))}
             </motion.div>
 
-            {/* Content area */}
-            <div className="flex-1 overflow-hidden font-mono">
+            {/* Content area - Cleaner design */}
+            <div className="flex-1 overflow-auto" style={{ maxHeight: '400px' }}>
               <AnimatePresence mode="wait">
                 {activeTab === 'description' && (
                   <motion.div
@@ -173,7 +255,7 @@ export function ModelViewer({ model }: ModelViewerProps) {
                     initial="hidden"
                     animate="visible"
                     exit="exit"
-                    className="text-white text-sm leading-relaxed"
+                    className="text-gray-700 text-base leading-relaxed pr-4"
                   >
                     <p>{model.longDescription}</p>
                   </motion.div>
@@ -186,20 +268,21 @@ export function ModelViewer({ model }: ModelViewerProps) {
                     initial="hidden"
                     animate="visible"
                     exit="exit"
+                    className="pr-4"
                   >
                     <ul className="space-y-6">
                       {model.howToUse.map((step, index) => (
                         <motion.li
                           key={index}
-                          initial={{ opacity: 0, x: -10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: index * 0.05, duration: 0.2 }}
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: index * 0.05, duration: 0.3 }}
                           className="flex items-start"
                         >
-                          <div className="flex-shrink-0 w-6 h-6 border border-white flex items-center justify-center text-white mr-4 mt-0.5">
+                          <div className="flex-shrink-0 w-8 h-8 rounded-full bg-accent-primary/10 flex items-center justify-center text-accent-primary font-medium mr-4 mt-0.5">
                             {index + 1}
                           </div>
-                          <span className="text-white text-sm">{step}</span>
+                          <span className="text-gray-700 text-base">{step}</span>
                         </motion.li>
                       ))}
                     </ul>
@@ -213,17 +296,17 @@ export function ModelViewer({ model }: ModelViewerProps) {
                     initial="hidden"
                     animate="visible"
                     exit="exit"
-                    className="space-y-6"
+                    className="space-y-6 pr-4"
                   >
-                    <div className="flex space-x-4 mb-8">
+                    <div className="flex space-x-3 mb-6">
                       {model.realWorldExamples.map((_, index) => (
                         <button
                           key={index}
                           onClick={() => setActiveExample(index)}
-                          className={`w-5 h-5 flex items-center justify-center ${
+                          className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
                             activeExample === index
-                              ? 'bg-accent text-black'
-                              : 'border border-white text-white'
+                              ? 'bg-accent-primary text-white shadow-sm'
+                              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                           }`}
                           aria-label={`Example ${index + 1}`}
                         >
@@ -240,11 +323,11 @@ export function ModelViewer({ model }: ModelViewerProps) {
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -10 }}
-                            transition={{ duration: 0.2 }}
-                            className="p-4 border border-white"
+                            transition={{ duration: 0.3 }}
+                            className="p-6 rounded-xl border border-gray-200 bg-gray-50"
                           >
-                            <h3 className="font-bold uppercase text-accent mb-3 text-sm tracking-wider">{example.title}</h3>
-                            <p className="text-white text-sm">{example.description}</p>
+                            <h3 className="font-bold text-gray-900 mb-3">{example.title}</h3>
+                            <p className="text-gray-700">{example.description}</p>
                           </motion.div>
                         )
                       ))}
@@ -255,24 +338,25 @@ export function ModelViewer({ model }: ModelViewerProps) {
             </div>
           </div>
 
-          {/* Diagram Section - Brutalist styling */}
+          {/* Diagram Section - Modern, clean styling */}
           <div
             ref={ref}
-            className="relative h-[400px] md:h-auto bg-black flex items-center justify-center overflow-hidden"
+            className="relative h-[450px] md:h-auto bg-gray-50 flex items-center justify-center overflow-hidden"
           >
-            <div className="absolute inset-0 grid grid-cols-8 grid-rows-8">
-              {Array.from({ length: 9 }).map((_, i) => (
-                <div key={`h-${i}`} className="w-full h-px bg-white/10" style={{ top: `${i * 12.5}%`, position: 'absolute', left: 0, right: 0 }} />
-              ))}
-              {Array.from({ length: 9 }).map((_, i) => (
-                <div key={`v-${i}`} className="h-full w-px bg-white/10" style={{ left: `${i * 12.5}%`, position: 'absolute', top: 0, bottom: 0 }} />
-              ))}
-              <div className="absolute top-1/3 left-0 right-0 h-px bg-accent/30" />
-              <div className="absolute left-1/3 top-0 bottom-0 w-px bg-accent/30" />
+            {/* Subtle grid background */}
+            <div className="absolute inset-0">
+              <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] bg-[length:16px_16px] opacity-50"></div>
             </div>
 
-            <div className="relative z-10 w-full h-full flex items-center justify-center">
-              {inView && renderDiagram()}
+            {/* Decorative elements */}
+            <div className="absolute top-0 right-0 w-20 h-20 bg-accent-primary/5 rounded-full blur-xl"></div>
+            <div className="absolute bottom-0 left-0 w-40 h-40 bg-accent-secondary/5 rounded-full blur-xl"></div>
+
+            {/* Main diagram container */}
+            <div className="relative z-10 w-full h-full flex items-center justify-center p-8">
+              <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 w-full max-w-md aspect-square flex items-center justify-center">
+                {inView && renderDiagram()}
+              </div>
             </div>
 
             <AnimatePresence>
@@ -281,12 +365,14 @@ export function ModelViewer({ model }: ModelViewerProps) {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.2 }}
-                  className="absolute bottom-4 left-1/2 transform -translate-x-1/2 border border-white px-3 py-1 text-xs font-mono text-white uppercase tracking-wider"
+                  transition={{ duration: 0.3 }}
+                  className="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-white rounded-full shadow-md px-4 py-2 text-sm font-medium text-gray-700"
                 >
                   <span className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-accent"></div>
-                    Interact with diagram
+                    <svg className="w-4 h-4 text-accent-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                    Interactive diagram - click to explore
                   </span>
                 </motion.div>
               )}
