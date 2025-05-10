@@ -459,6 +459,46 @@ p {
   100% { background-position: 0% 50%; }
 }
 
+@keyframes pulse-slow {
+  0% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+  100% { opacity: 0.4; }
+}
+
+@keyframes pulse-slower {
+  0% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+  100% { opacity: 0.3; }
+}
+
+@keyframes pulse-fast {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.2); opacity: 0.8; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes glow-pulse-slow {
+  0% { opacity: 0.3; }
+  50% { opacity: 0.8; }
+  100% { opacity: 0.3; }
+}
+
+@keyframes radial-pulse {
+  0% { box-shadow: 0 0 0 0px rgba(255, 255, 255, 0.1); }
+  100% { box-shadow: 0 0 0 40px rgba(255, 255, 255, 0); }
+}
+
 .animate-slide-in {
   animation: slide-in 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
@@ -472,8 +512,56 @@ p {
   animation: gradient-shift 6s ease infinite;
 }
 
+.animate-pulse-slow {
+  animation: pulse-slow 4s ease-in-out infinite;
+}
+
+.animate-pulse-slower {
+  animation: pulse-slower 6s ease-in-out infinite;
+}
+
+.animate-pulse-fast {
+  animation: pulse-fast 2s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 20s linear infinite;
+}
+
+.animate-glow-pulse-slow {
+  animation: glow-pulse-slow 4s ease-in-out infinite;
+}
+
+.animate-radial-pulse {
+  animation: radial-pulse 1.5s ease-out infinite;
+}
+
 .perspective-1000 {
   perspective: 1000px;
+}
+
+.perspective-3d {
+  perspective: 1500px;
+}
+
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+
+.perspective-origin-center {
+  perspective-origin: center center;
+}
+
+.shadow-glow {
+  box-shadow: 0 0 15px rgba(255, 58, 94, 0.15);
+}
+
+.animation-delay-500 {
+  animation-delay: 0.5s;
 }
 
 /* Canvas background - stark minimalist */
