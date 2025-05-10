@@ -17,4 +17,4 @@ Do not do "dummy" implementations of things.
 
 Always start any major new task in PLAN / ARCHITECT mode, and only transition to CODE mode when you have a clear plan and architecture in place, explicitly approved by me. During this plan mode, you will think through your architecture and plan out the implementation details, ask me clarifying questions, think about edge cases, and think about the best way to implement the feature. You will consider maintainability, scalability, and performance. You will also consider the best way to implement the feature, and the best way to implement the feature in a way that is easy to maintain and scale.
 
-
+make commits early and often 

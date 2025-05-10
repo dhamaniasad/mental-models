@@ -98,10 +98,10 @@ export function Canvas({ cursorPosition }: CanvasProps) {
       const centerY = gradientCanvas.height / (window.devicePixelRatio || 1) / 2;
 
       // Create gradient from center to edges
-      const gradient = gradientCtx.createRadialGradient(
+      const gradient = gradientCtx.createRadialGradient?.(
         centerX, centerY, 0,
         centerX, centerY, Math.max(centerX, centerY) * 1.2
-      );
+      ) as CanvasGradient;
 
       // Rich color stops for depth
       gradient.addColorStop(0, 'rgba(18, 18, 40, 1)');      // Deep blue-black at center
@@ -114,10 +114,10 @@ export function Canvas({ cursorPosition }: CanvasProps) {
       gradientCtx.fillRect(0, 0, gradientCanvas.width / (window.devicePixelRatio || 1), gradientCanvas.height / (window.devicePixelRatio || 1));
 
       // Add vignette effect
-      const vignetteGradient = gradientCtx.createRadialGradient(
+      const vignetteGradient = gradientCtx.createRadialGradient?.(
         centerX, centerY, 0,
         centerX, centerY, Math.max(centerX, centerY) * 1.1
-      );
+      ) as CanvasGradient;
 
       vignetteGradient.addColorStop(0, 'rgba(0, 0, 0, 0)');
       vignetteGradient.addColorStop(0.7, 'rgba(0, 0, 0, 0.1)');
@@ -372,10 +372,10 @@ export function Canvas({ cursorPosition }: CanvasProps) {
         if (point.size > 1.5 || Math.random() < 0.05) {
           ctx.beginPath();
           ctx.arc(point.x, point.y, point.size * 3, 0, Math.PI * 2);
-          const gradient = ctx.createRadialGradient(
+          const gradient = ctx.createRadialGradient?.(
             point.x, point.y, point.size,
             point.x, point.y, point.size * 3
-          );
+          ) as CanvasGradient;
           gradient.addColorStop(0, `hsla(${point.hue}, 80%, 60%, ${point.opacity * 0.4})`);
           gradient.addColorStop(1, `hsla(${point.hue}, 80%, 60%, 0)`);
           ctx.fillStyle = gradient;
@@ -395,10 +395,10 @@ export function Canvas({ cursorPosition }: CanvasProps) {
         if (particle.depth > 0.7) {
           ctx.beginPath();
           ctx.arc(particle.x, particle.y, particle.radius * 2, 0, Math.PI * 2);
-          const gradient = ctx.createRadialGradient(
+          const gradient = ctx.createRadialGradient?.(
             particle.x, particle.y, particle.radius * 0.5,
             particle.x, particle.y, particle.radius * 2
-          );
+          ) as CanvasGradient;
           const baseColor = particle.color.replace(/[\d\.]+\)$/, '');
           gradient.addColorStop(0, `${baseColor}0.3)`);
           gradient.addColorStop(1, `${baseColor}0)`);

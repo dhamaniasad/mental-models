@@ -83,10 +83,10 @@ export default function SpaceBackground() {
       ];
       
       circles.forEach(circle => {
-        const gradient = ctx.createRadialGradient(
+        const gradient = ctx.createRadialGradient?.(
           circle.x, circle.y, 0,
           circle.x, circle.y, circle.radius
-        );
+        ) as CanvasGradient;
         
         gradient.addColorStop(0, circle.color1);
         gradient.addColorStop(1, circle.color2);
@@ -143,10 +143,10 @@ export default function SpaceBackground() {
       ctx.save();
       
       // Create radial gradient for vignette effect
-      const gradient = ctx.createRadialGradient(
+      const gradient = ctx.createRadialGradient?.(
         width / 2, height / 2, 0,
         width / 2, height / 2, Math.max(width, height) / 1.5
-      );
+      ) as CanvasGradient;
       
       gradient.addColorStop(0, 'rgba(0, 0, 0, 0)');
       gradient.addColorStop(1, 'rgba(0, 0, 0, 0.4)');

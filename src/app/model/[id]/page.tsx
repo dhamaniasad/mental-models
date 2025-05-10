@@ -10,22 +10,21 @@ import { Footer } from "@/components/Footer";
 import SpaceBackground from "@/components/SpaceBackground";
 import { ModelViewer } from "@/components/ModelViewer";
 
-// Define the params type specifically for this page component
-type ModelPageParams = {
-  id: string;
-};
-
-// Define the props type for the page component
-type ModelPageProps = {
-  params: ModelPageParams;
-};
+interface ModelPageProps {
+  params: {
+    id: string;
+  };
+  searchParams: Record<string, string | string[] | undefined>;
+}
 
 export default function ModelPage({ params }: ModelPageProps) {
+  const id = params.id;
+
   const [model, setModel] = useState<typeof models[0] | null>(null);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
-  
+
   useEffect(() => {
-    const foundModel = models.find(m => m.id === params.id);
+    const foundModel = models.find(m => m.id === id);
     if (foundModel) {
       setModel(foundModel);
       // Short loading animation
@@ -35,7 +34,7 @@ export default function ModelPage({ params }: ModelPageProps) {
     } else {
       notFound();
     }
-  }, [params.id]);
+  }, [id]);
   
   if (!model) {
     return null; // Show nothing while loading to avoid flash
