@@ -1,0 +1,20 @@
+name = "mental-models"
+compatibility_date = "2025-05-10"
+
+# Configure the Next.js build output as a Pages project
+[build]
+command = "npm run build"
+
+[site]
+bucket = "./.next/static"
+
+# Configure workers.dev subdomain
+workers_dev = true
+
+# Bind assets with the Pages Functions
+[[assets]]
+binding = "NEXT_ASSETS"
+path = "./.next/static"
+
+[build.upload]
+format = "service-worker"

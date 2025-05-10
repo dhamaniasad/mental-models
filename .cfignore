@@ -1,0 +1,40 @@
+# Dependencies
+node_modules/
+
+# Build directories that are not needed for deployment
+.DS_Store
+.next/cache/
+.next/trace/
+.vercel/
+out/
+
+# Git
+.git/
+.github/
+.gitignore
+
+# Config files not needed for deployment
+.env*
+!.env.example
+.eslintrc*
+.prettierrc*
+tsconfig.json
+tsconfig.*.json
+README.md
+CHANGELOG.md
+CONTRIBUTING.md
+LICENSE
+jest.config.*
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Development tools
+.vscode/
+.idea/
+*.swp
+*.swo
