@@ -6,9 +6,7 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "deploy": "wrangler pages deploy out",
-    "preview": "wrangler pages dev out"
+    "lint": "next lint"
   },
   "dependencies": {
     "framer-motion": "^12.10.5",
@@ -27,7 +25,6 @@
     "eslint": "^9",
     "eslint-config-next": "15.3.2",
     "tailwindcss": "^4",
-    "typescript": "^5",
-    "wrangler": "^4.14.4"
+    "typescript": "^5"
   }
 }
