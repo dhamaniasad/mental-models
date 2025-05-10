@@ -1,26 +1,11 @@
-main = ".open-next/worker.js"
 name = "mental-models"
 compatibility_date = "2025-05-10"
-compatibility_flags = [
-  "nodejs_compat",
-  "global_fetch_strictly_public"
-]
 
 [build]
 command = "npm run build"
 
 [site]
-bucket = ".open-next/assets"
+bucket = "out"
 
 # Configure workers.dev subdomain
 workers_dev = true
-
-# Asset binding for static files
-[assets]
-directory = ".open-next/assets"
-binding = "ASSETS"
-
-# Self-reference for internal routing
-[[services]]
-binding = "WORKER_SELF_REFERENCE"
-service = "mental-models"

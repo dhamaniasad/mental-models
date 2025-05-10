@@ -10,17 +10,16 @@ const nextConfig: NextConfig = {
     // your project has type errors
     ignoreBuildErrors: true,
   },
-  // OpenNext will handle the output configuration
-  experimental: {
-    // This enables middleware and server components to work with OpenNext
-    serverComponentsExternalPackages: [],
-    // This enables app router navigation
-    appDocumentPreloading: true
-  },
-  // Enhanced built-in client-side caching
-  staticPageGenerationTimeout: 180,
-  // Improve build speeds by reusing cached builds
+  // Configuration optimized for Cloudflare Pages
+  output: 'export',
+  // Better performance by disabling unnecessary features
   poweredByHeader: false,
+  // Improve build speeds
+  staticPageGenerationTimeout: 300,
+  // Needed for Cloudflare Pages deployment
+  images: {
+    unoptimized: true,
+  },
 };
 
 export default nextConfig;
