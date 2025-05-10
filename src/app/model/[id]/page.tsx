@@ -10,7 +10,17 @@ import { Footer } from "@/components/Footer";
 import SpaceBackground from "@/components/SpaceBackground";
 import { ModelViewer } from "@/components/ModelViewer";
 
-export default function ModelPage({ params }: { params: { id: string } }) {
+// Define the params type specifically for this page component
+type ModelPageParams = {
+  id: string;
+};
+
+// Define the props type for the page component
+type ModelPageProps = {
+  params: ModelPageParams;
+};
+
+export default function ModelPage({ params }: ModelPageProps) {
   const [model, setModel] = useState<typeof models[0] | null>(null);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   
